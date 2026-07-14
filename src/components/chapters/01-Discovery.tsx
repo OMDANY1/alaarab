@@ -5,7 +5,6 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useLanguage } from '@/context/LanguageContext';
 import ChapterIntro from '@/components/ui/ChapterIntro';
-import KineticHeadline from '@/components/ui/KineticHeadline';
 
 const SectionHeader = ({ label, number }: { label: string; number: string }) => (
   <div className="w-full flex justify-between items-center border-b border-current/10 pb-4 mb-12 select-none font-mono text-[10px] md:text-[11px] tracking-[0.2em] uppercase opacity-45">
@@ -56,7 +55,6 @@ export default function Discovery() {
   useGSAP(() => {
     // ── Category Noise Wall Scroll Animation ──
     const words = gsap.utils.toArray('.noise-word');
-    
     const tlNoise = gsap.timeline({
       scrollTrigger: {
         trigger: noiseWallRef.current,
@@ -70,15 +68,15 @@ export default function Discovery() {
     // Randomize initial positions & sizes
     words.forEach((word: any, i) => {
       const angle = (i / words.length) * Math.PI * 2;
-      const radius = 80 + Math.random() * 150;
+      const radius = 100 + Math.random() * 200;
       const x = Math.cos(angle) * radius;
       const y = Math.sin(angle) * radius;
 
       gsap.set(word, {
-        x: x * 1.5,
-        y: y * 1.5,
-        scale: 0.6 + Math.random() * 1.0,
-        opacity: 0.1 + Math.random() * 0.35,
+        x: x * 1.6,
+        y: y * 1.6,
+        scale: 0.6 + Math.random() * 0.8,
+        opacity: 0.05 + Math.random() * 0.3,
         rotation: -15 + Math.random() * 30,
       });
     });
@@ -87,46 +85,54 @@ export default function Discovery() {
     tlNoise.to(words, {
       x: 0,
       y: 0,
-      scale: 1.5,
-      opacity: 1,
+      scale: 1.4,
+      opacity: 0.8,
       filter: 'blur(0px)',
       stagger: 0.02,
       duration: 1,
     })
     .to(words, {
-      scale: 0.3,
+      scale: 0.2,
       opacity: 0,
-      filter: 'blur(15px)',
+      filter: 'blur(20px)',
       stagger: 0.01,
       duration: 0.8,
     });
 
-    // ── The Untold Story Sticky Section ──
+    // ── The Untold Story Sticky Section (Color Narrative Transition) ──
     const tlProblem = gsap.timeline({
       scrollTrigger: {
         trigger: problemRef.current,
         start: 'top top',
-        end: '+=150%',
+        end: '+=200%',
         scrub: 1,
         pin: true,
       },
     });
 
     const lines = gsap.utils.toArray('.problem-line');
-    gsap.set(lines, { opacity: 0, y: 55 });
+    gsap.set(lines, { opacity: 0, y: 40 });
+
+    // Animate background color change from Cream to Deep Burgundy
+    tlProblem.to(problemRef.current, {
+      backgroundColor: '#2D070B',
+      color: '#F1EEE8',
+      duration: 1,
+      ease: 'none',
+    }, 0);
 
     lines.forEach((line: any, index) => {
       tlProblem.to(line, {
         opacity: 1,
         y: 0,
-        duration: 1,
+        duration: 1.2,
         ease: 'power3.out',
       })
       .to(line, {
-        opacity: index === lines.length - 1 ? 1 : 0,
-        y: index === lines.length - 1 ? 0 : -35,
+        opacity: index === lines.length - 1 ? 1 : 0.08,
+        y: index === lines.length - 1 ? 0 : -20,
         duration: 0.8,
-        delay: 0.6,
+        delay: 0.5,
       });
     });
 
@@ -134,36 +140,23 @@ export default function Discovery() {
     const tlTurning = gsap.timeline({
       scrollTrigger: {
         trigger: turningPointRef.current,
-        start: 'top 80%',
-        end: 'bottom top',
+        start: 'top 70%',
         toggleActions: 'play none none reverse',
       },
     });
 
-    // Dramatic background transition to burgundy
-    gsap.to(turningPointRef.current, {
-      scrollTrigger: {
-        trigger: turningPointRef.current,
-        start: 'top 50%',
-        end: 'top 10%',
-        scrub: true,
-      },
-      backgroundColor: '#2D070B',
-      color: '#F1EEE8',
-    });
-
-    tlTurning.fromTo('.turning-number', 
-      { scale: 0.6, opacity: 0, y: 80 },
-      { scale: 1, opacity: 1, y: 0, duration: 1.2, ease: 'power4.out' }
+    tlTurning.fromTo('.turning-number',
+      { opacity: 0, scale: 0.9, y: 30 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: 'power4.out' }
     )
     .fromTo('.turning-sub',
       { opacity: 0, y: 25 },
-      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
-      '-=0.6'
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
+      '-=0.4'
     )
     .fromTo('.turning-desc',
       { opacity: 0, y: 30 },
-      { opacity: 0.85, y: 0, duration: 0.8, ease: 'power3.out' },
+      { opacity: 0.9, y: 0, duration: 0.8, ease: 'power3.out' },
       '-=0.4'
     );
 
@@ -179,23 +172,33 @@ export default function Discovery() {
         titleEn="DISCOVERY"
       />
 
-      {/* Part B: Category Statement */}
+      {/* Part B: Category Statement (Redesigned Editorial Spread) */}
       <section className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative">
         <SectionHeader
           label={language === 'ar' ? 'الباب الأول / المشكلة' : 'CHAPTER 01 / THE TENSION'}
           number="01 / 08"
         />
-        <div className="flex-1 flex flex-col justify-center max-w-6xl mx-auto w-full gap-16 md:gap-24">
-          <KineticHeadline
-            tag="h2"
-            text={language === 'ar' ? 'الشاورما في كل مكان.' : 'SHAWARMA IS EVERYWHERE.'}
-            className="text-[#E64648] font-black uppercase text-display-xl tracking-tight"
-          />
-          <KineticHeadline
-            tag="h3"
-            text={language === 'ar' ? 'لكن كم مكان يعرف الصنعة فعلًا؟' : 'MASTERY IS NOT.'}
-            className="font-bold text-display-md tracking-tight opacity-90"
-          />
+        
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full max-w-7xl mx-auto">
+          {/* Left Side: rotated English Annotation */}
+          <div className="lg:col-span-3 flex lg:justify-start justify-center items-center h-full relative">
+            <div className="flex items-center gap-4 lg:rotate-90 origin-left lg:translate-x-12 whitespace-nowrap">
+              <span className="h-[1px] w-12 bg-[#2D070B]/30" />
+              <span className="font-mono text-[9px] md:text-[10px] tracking-[0.3em] uppercase opacity-60">
+                {language === 'ar' ? 'تصنيف السوق' : 'SHAWARMA IS EVERYWHERE.'}
+              </span>
+            </div>
+          </div>
+
+          {/* Right Side: Dominant Arabic Statement */}
+          <div className="lg:col-span-9 flex flex-col justify-center items-start gap-8 w-full">
+            <h2 className="font-cairo text-[#E64648] text-display-xl font-black leading-[1.1] tracking-tighter select-none w-full text-start">
+              {language === 'ar' ? 'الشاورما في كل مكان.' : 'SHAWARMA IS EVERYWHERE.'}
+            </h2>
+            <h3 className="font-cairo text-[#2D070B] text-heading-lg md:text-display-md font-bold leading-[1.2] tracking-tight opacity-90 text-start max-w-3xl">
+              {language === 'ar' ? 'لكن كم مكان يعرف الصنعة فعلًا؟' : 'But how many actually know the craft?'}
+            </h3>
+          </div>
         </div>
       </section>
 
@@ -209,7 +212,7 @@ export default function Discovery() {
           {phrases.map((phrase, i) => (
             <span
               key={i}
-              className="noise-word absolute font-display text-[3.5vw] md:text-[2vw] font-black text-[#2D070B] whitespace-nowrap pointer-events-none"
+              className="noise-word absolute font-cairo text-[4vw] md:text-[2.5vw] font-black text-[#2D070B] whitespace-nowrap pointer-events-none opacity-20"
             >
               {phrase}
             </span>
@@ -217,42 +220,51 @@ export default function Discovery() {
         </div>
       </section>
 
-      {/* Part D: The Untold Story Sticky Section */}
-      <section ref={problemRef} className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#F1EEE8]">
+      {/* Part D: The Untold Story Sticky Section (Dynamic Background Transition) */}
+      <section ref={problemRef} className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#F1EEE8] text-[#2D070B] transition-colors duration-300">
         <SectionHeader
           label={language === 'ar' ? 'الرؤية الاستراتيجية' : 'THE STRATEGIC INSIGHT'}
           number="01 / 08"
         />
-        <div className="flex-1 flex flex-col justify-center items-center text-center max-w-4xl mx-auto w-full gap-8 relative min-h-[40vh]">
-          <div className="problem-line font-display text-heading-lg md:text-display-md font-bold leading-tight py-1">
+        <div className="flex-1 flex flex-col justify-center items-center text-center max-w-5xl mx-auto w-full gap-16 relative min-h-[50vh]">
+          <div className="problem-line font-cairo text-heading-lg md:text-display-md font-bold leading-tight py-2">
             {language === 'ar' ? 'المشكلة لم تكن في المنتج.' : 'THE PROBLEM WAS NEVER THE PRODUCT.'}
           </div>
-          <div className="problem-line font-display text-heading-lg md:text-display-md font-black text-[#E64648] leading-tight py-1">
+          <div className="problem-line font-cairo text-heading-lg md:text-display-md font-black text-[#E64648] leading-tight py-2">
             {language === 'ar' ? 'المشكلة كانت في القصة التي لم تُروَ بعد.' : 'THE PROBLEM WAS THE STORY UNTOLD.'}
           </div>
         </div>
       </section>
 
-      {/* Part E: The 30 Years Reveal (Strategic Turning Point) */}
+      {/* Part E: The 30 Years Reveal (Strategic Turning Point - Redesigned Asymmetric Spread) */}
       <section
         ref={turningPointRef}
-        className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#F1EEE8] text-[#2D070B] transition-colors duration-500"
+        className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#E64648] text-[#F1EEE8]"
       >
         <SectionHeader
           label={language === 'ar' ? 'نقطة التحول' : 'THE TURNING POINT'}
           number="01 / 08"
         />
-        <div className="flex-1 flex flex-col justify-center items-center text-center max-w-4xl mx-auto w-full gap-6">
-          <div className="turning-number font-mono text-[18vw] md:text-[14vw] font-bold text-[#E64648] leading-none py-2">
-            +30
+        
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full max-w-7xl mx-auto">
+          {/* Left Column: Giant +30 Number */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-start items-center">
+            <div className="turning-number font-mono text-[22vw] lg:text-[18vw] font-bold text-[#F1EEE8] leading-none tracking-tighter select-none">
+              +30
+            </div>
           </div>
-          <div className="turning-sub font-display text-heading-lg md:text-display-md font-bold uppercase tracking-widest leading-none py-1">
-            {language === 'ar' ? 'سنة خبرة في الصنعة' : 'YEARS OF EXPERT CRAFT'}
-          </div>
-          <div className="turning-desc font-body text-body-lg md:text-heading-sm opacity-85 max-w-2xl mt-4 leading-relaxed">
-            {language === 'ar'
-              ? 'أكثر من ٣٠ سنة في الصنعة. خبرة لا تبنى في حملة، بل تصنعها السنين.'
-              : 'More than 30 years of professional restaurant mastery in Saudi Arabia. Built over decades, not templates.'}
+
+          {/* Right Column: Strategic Text Content */}
+          <div className="lg:col-span-7 flex flex-col justify-center items-start gap-6 text-start">
+            <h4 className="turning-sub font-cairo text-heading-lg lg:text-display-md font-black leading-[1.2] uppercase tracking-tight py-1">
+              {language === 'ar' ? 'سنة خبرة في الصنعة' : 'YEARS OF CRAFT MASTERY'}
+            </h4>
+            <div className="h-[1px] w-24 bg-[#F1EEE8]/40 my-2" />
+            <p className="turning-desc font-cairo text-body-lg lg:text-heading-sm opacity-90 leading-relaxed max-w-2xl">
+              {language === 'ar'
+                ? 'أكثر من ٣٠ سنة في الصنعة. خبرة لا تبنى في حملة، بل تصنعها السنين.'
+                : 'More than 30 years of professional restaurant mastery in Saudi Arabia. Built over decades, not templates.'}
+            </p>
           </div>
         </div>
       </section>
