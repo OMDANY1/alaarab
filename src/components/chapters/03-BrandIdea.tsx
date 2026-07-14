@@ -17,15 +17,15 @@ export default function BrandIdea() {
   const { language } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const textRevealRef = useRef<HTMLDivElement>(null);
-  const equationRef = useRef<HTMLDivElement>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // ── Build-Up Timeline ──
+    // ── Build-Up & Climax Timeline ──
     const tlBuild = gsap.timeline({
       scrollTrigger: {
         trigger: textRevealRef.current,
         start: 'top top',
-        end: '+=150%',
+        end: '+=180%',
         scrub: 1,
         pin: true,
       },
@@ -34,51 +34,64 @@ export default function BrandIdea() {
     const items = gsap.utils.toArray('.buildup-item');
     const climax = document.querySelector('.climax-headline');
     const climaxSub = document.querySelector('.climax-sub');
+    const boardLines = gsap.utils.toArray('.ev-guide-line');
 
-    gsap.set(items, { opacity: 0, y: 30 });
-    gsap.set(climax, { clipPath: 'inset(0 0 100% 0)', scale: 0.95 });
-    gsap.set(climaxSub, { opacity: 0, y: 20 });
+    gsap.set(items, { opacity: 0, y: 40 });
+    gsap.set(climax, { opacity: 0, scale: 0.95 });
+    gsap.set(climaxSub, { opacity: 0, y: 15 });
+    gsap.set(boardLines, { scaleX: 0, scaleY: 0 });
 
+    // Draw background guide lines
+    tlBuild.to(boardLines, {
+      scaleX: 1,
+      scaleY: 1,
+      stagger: 0.1,
+      duration: 0.6,
+      ease: 'none',
+    }, 0);
+
+    // Staggered reveal and collapse of annotations
     items.forEach((item: any, i) => {
       tlBuild.to(item, {
-        opacity: 1,
+        opacity: 0.9,
         y: 0,
         duration: 0.8,
         ease: 'power3.out',
       })
       .to(item, {
-        opacity: 0,
+        opacity: 0.05,
         y: -20,
         duration: 0.6,
         delay: 0.4,
       });
     });
 
+    // Final Climax Reveal
     tlBuild.to(climax, {
-      clipPath: 'inset(0 0 0% 0)',
+      opacity: 1,
       scale: 1,
-      duration: 1.5,
+      duration: 1.2,
       ease: 'power4.out',
     })
     .to(climaxSub, {
-      opacity: 1,
+      opacity: 0.85,
       y: 0,
       duration: 0.8,
       ease: 'power2.out',
-    }, '-=0.5');
+    }, '-=0.4');
 
-    // ── Interactive Equation ──
-    const tlEq = gsap.timeline({
+    // ── Strategy Board Sheets Fade In ──
+    const tlBoard = gsap.timeline({
       scrollTrigger: {
-        trigger: equationRef.current,
+        trigger: boardRef.current,
         start: 'top 75%',
         toggleActions: 'play none none reverse',
       },
     });
 
-    tlEq.fromTo('.interactive-node',
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, stagger: 0.2, duration: 0.6, ease: 'power2.out' }
+    tlBoard.fromTo('.strategy-sheet',
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, stagger: 0.25, duration: 1.0, ease: 'power3.out' }
     );
 
   }, { scope: containerRef });
@@ -93,86 +106,146 @@ export default function BrandIdea() {
         titleEn="CONCEPT"
       />
 
-      {/* Climax Climax Climax */}
-      <section ref={textRevealRef} className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#2D070B]">
+      {/* Part B: Climax Reveal (Redesigned Asymmetric Strategy Canvas) */}
+      <section ref={textRevealRef} className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#2D070B] overflow-hidden">
         <SectionHeader
           label={language === 'ar' ? 'الباب الثالث / المفهوم المركزي' : 'CHAPTER 03 / CORE BRAND IDEA'}
           number="03 / 08"
         />
+
+        {/* Blueprint background grid lines */}
+        <div className="absolute left-[15%] top-0 bottom-0 w-[1px] bg-white/[0.02] origin-top ev-guide-line scale-y-0" />
+        <div className="absolute right-[15%] top-0 bottom-0 w-[1px] bg-white/[0.02] origin-top ev-guide-line scale-y-0" />
+        <div className="absolute left-0 right-0 top-[35%] h-[1px] bg-white/[0.02] origin-left ev-guide-line scale-x-0" />
         
-        <div className="flex-1 w-full max-w-6xl mx-auto flex flex-col justify-center items-center relative text-center min-h-[40vh]">
-          {/* Build up steps */}
-          <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
-            <div className="buildup-item font-display text-heading-lg font-light tracking-wide opacity-0">
-              {language === 'ar' ? 'بعد تحليل الاسم...' : 'After analyzing the name...'}
+        <div className="flex-1 w-full max-w-7xl mx-auto flex flex-col justify-center items-center relative min-h-[50vh]">
+          
+          {/* Asymmetric Scattered Strategic Annotations */}
+          <div className="absolute inset-0 w-full h-full pointer-events-none select-none">
+            {/* Annotation 1: Top-Right */}
+            <div className="buildup-item absolute top-[10%] right-[10%] max-w-xs text-start flex flex-col gap-2">
+              <span className="font-mono text-[9px] text-[#E64648] tracking-widest uppercase">01 // THE DIAGNOSIS</span>
+              <span className="font-cairo text-body-sm opacity-60">
+                {language === 'ar' ? 'سوق مزدحم بالادعاءات دون مرجعية واضحة.' : 'A market filled with generic claims and zero authority.'}
+              </span>
             </div>
-            <div className="buildup-item font-display text-heading-lg font-light tracking-wide opacity-0">
-              {language === 'ar' ? 'القصة الكامنة...' : 'The latent story...'}
+
+            {/* Annotation 2: Center-Left */}
+            <div className="buildup-item absolute top-[40%] left-[8%] max-w-xs text-start flex flex-col gap-2">
+              <span className="font-mono text-[9px] text-[#E64648] tracking-widest uppercase">02 // THE DEVIATION</span>
+              <span className="font-cairo text-body-sm opacity-60">
+                {language === 'ar' ? 'تجنب القوالب المكررة والنوستالجيا المستهلكة.' : 'Bypassing film parodies and nostalgia clichés.'}
+              </span>
             </div>
-            <div className="buildup-item font-display text-heading-lg font-light tracking-wide opacity-0">
-              {language === 'ar' ? 'والخبرة التراكمية...' : 'And the years of mastery...'}
+
+            {/* Annotation 3: Bottom-Right */}
+            <div className="buildup-item absolute bottom-[15%] right-[12%] max-w-xs text-start flex flex-col gap-2">
+              <span className="font-mono text-[9px] text-[#E64648] tracking-widest uppercase">03 // THE FORMULA</span>
+              <span className="font-cairo text-body-sm opacity-60">
+                {language === 'ar' ? 'تكامل ثلاثون عامًا من المعرفة الفائقة.' : 'Leveraging three decades of process mastery.'}
+              </span>
             </div>
           </div>
 
-          {/* Climax reveal */}
-          <div className="flex flex-col items-center gap-6">
-            <h2 className="climax-headline font-arabic-display text-[12vw] md:text-[10vw] font-black text-[#E64648] leading-[1.2] py-2 select-none">
+          {/* Climax reveal (Dominant Typographic Centerpiece) */}
+          <div className="flex flex-col items-center gap-6 z-10 relative">
+            <h2 className="climax-headline font-cairo text-[#E64648] text-display-xl lg:text-[10vw] font-black leading-none tracking-tighter select-none py-2">
               للصنعة عرّاب
             </h2>
-            <div className="climax-sub font-display text-[3vw] md:text-[2vw] font-light text-[#F1EEE8] opacity-80 uppercase tracking-[0.15em] select-none mt-4">
-              EVERY CRAFT HAS ITS MASTER.
+            <div className="climax-sub font-mono text-[10px] md:text-xs tracking-[0.35em] text-[#F1EEE8] opacity-70 uppercase select-none mt-2">
+              {language === 'ar' ? 'القانون الوحيد الذي يحكم الصنعة' : 'EVERY CRAFT HAS ITS SOVEREIGN.'}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Interactive Brand Equation Section */}
+      {/* Part C: The Strategy Wall / Workshop Boards (Redesigned Corkboard Sheets) */}
       <section
-        ref={equationRef}
-        className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#F1EEE8] text-[#2D070B]"
+        ref={boardRef}
+        className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#F1EEE8] text-[#2D070B] overflow-hidden"
       >
         <SectionHeader
-          label={language === 'ar' ? 'المعادلة التفاعلية' : 'INTERACTIVE EQUATION'}
+          label={language === 'ar' ? 'لوحة عمل الإستراتيجية' : 'STRATEGY BOARD'}
           number="03 / 08"
         />
         
-        <div className="flex-1 max-w-4xl mx-auto text-center flex flex-col justify-center items-center gap-16 w-full">
-          <div className="flex flex-col gap-4">
+        <div className="flex-1 flex flex-col justify-center items-center max-w-6xl mx-auto w-full gap-16 relative">
+          
+          <div className="flex flex-col gap-4 text-center">
             <span className="font-mono text-xs tracking-[0.3em] text-[#E64648] uppercase">
-              {language === 'ar' ? 'مفهوم الصنعة بالأرقام' : 'THE ALCHEMY OF AL-ARRAB'}
+              {language === 'ar' ? 'أعمدة التموضع الرئيسي' : 'THE CORE STRATEGIC PILLARS'}
             </span>
-            <h3 className="font-display text-heading-lg md:text-display-md font-bold leading-tight py-1">
-              {language === 'ar' ? 'كيف نصيغ الريادة؟' : 'How mastery is structured.'}
+            <h3 className="font-cairo text-heading-lg lg:text-display-md font-black leading-tight max-w-4xl">
+              {language === 'ar' ? 'كيف تتجسد سيادة الصنعة؟' : 'Structuring Craft Authority.'}
             </h3>
           </div>
 
-          {/* Equation system */}
-          <div className="grid grid-cols-1 md:grid-cols-7 items-center justify-center gap-6 font-display font-black text-[5vw] md:text-[2.2vw] w-full">
-            <div className="interactive-node col-span-2 flex flex-col items-center bg-[#2D070B] text-[#F1EEE8] px-6 py-8 rounded-sm shadow-md hover:scale-105 transition-all duration-300 select-none">
-              <span className="text-[11px] font-mono opacity-50 mb-2">{language === 'ar' ? 'المكون الأول' : 'YEARS'}</span>
-              <span>{language === 'ar' ? 'السنين' : 'EXPERIENCE'}</span>
+          {/* Overlapping Presentation Board Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start w-full relative z-10 px-4">
+            
+            {/* Card 01: The Master */}
+            <div className="strategy-sheet flex flex-col items-start border border-[#2D070B]/10 bg-white/40 p-8 rounded-sm min-h-[380px] relative shadow-sm">
+              <div className="absolute top-4 right-4 font-mono text-[9px] opacity-40">BOARD 01</div>
+              <span className="text-[11px] font-mono text-[#E64648] tracking-widest mb-6">PILLAR // 01</span>
+              <h4 className="font-cairo text-heading-md font-bold text-[#2D070B] mb-4">
+                {language === 'ar' ? 'المعلّم (The Master)' : 'THE MASTER'}
+              </h4>
+              <p className="font-cairo text-body-sm opacity-80 leading-relaxed">
+                {language === 'ar'
+                  ? 'السيادة والوقار الهادئ. العراب لا يحتاج إلى الصراخ أو تبني الميمز والترندات الصاخبة؛ المعرفة الفائقة تفرض حضورها دون مبالغة.'
+                  : 'Sovereign authority. Al-Arrab knows more, and therefore needs to shout less. Complete category leadership built on quiet presence.'}
+              </p>
             </div>
-            
-            <div className="interactive-node text-[#E64648] font-bold text-[8vw] md:text-[3vw]">+</div>
-            
-            <div className="interactive-node col-span-2 flex flex-col items-center bg-[#2D070B] text-[#F1EEE8] px-6 py-8 rounded-sm shadow-md hover:scale-105 transition-all duration-300 select-none">
-              <span className="text-[11px] font-mono opacity-50 mb-2">{language === 'ar' ? 'المكون الثاني' : 'SECRET'}</span>
-              <span>{language === 'ar' ? 'معرفة الصنعة' : 'MASTERY'}</span>
+
+            {/* Card 02: The Process (Solid Dark Sheet + Image Crop) */}
+            <div className="strategy-sheet flex flex-col items-start bg-[#2D070B] text-[#F1EEE8] p-8 rounded-sm min-h-[380px] relative shadow-xl md:-translate-y-4 border border-white/5">
+              <div className="absolute top-4 right-4 font-mono text-[9px] opacity-35">BOARD 02</div>
+              <span className="text-[11px] font-mono text-[#E64648] tracking-widest mb-6">PILLAR // 02</span>
+              <h4 className="font-cairo text-heading-md font-bold mb-4">
+                {language === 'ar' ? 'الأصالة الصادقة' : 'RAW METHOD'}
+              </h4>
+              <p className="font-cairo text-body-sm opacity-80 leading-relaxed mb-6">
+                {language === 'ar'
+                  ? 'النار الحقيقية، جمر الحطب، والسكين الماهر. الصنعة هي طريقة عمل واضحة لا تقبل التنازلات أو الحلول الجاهزة.'
+                  : 'True wood embers, master carving knives, and local baking. A dedication to process where shortcuts are rejected.'}
+              </p>
+              <div className="w-full h-24 mt-auto overflow-hidden rounded-sm relative border border-white/10">
+                <img
+                  src="/images/meat_texture.png"
+                  alt="Raw Process"
+                  className="w-full h-full object-cover opacity-80 hover:scale-105 transition-transform duration-500"
+                />
+              </div>
             </div>
-            
-            <div className="interactive-node text-[#E64648] font-bold text-[8vw] md:text-[3vw]">=</div>
-            
-            <div className="interactive-node col-span-2 flex flex-col items-center bg-[#E64648] text-[#F1EEE8] px-6 py-8 rounded-sm shadow-xl hover:scale-105 transition-all duration-300 select-none">
-              <span className="text-[11px] font-mono text-[#2D070B] opacity-60 mb-2">{language === 'ar' ? 'المكانة النهائية' : 'SOVEREIGNTY'}</span>
-              <span>{language === 'ar' ? 'العراب' : 'AL-ARRAB'}</span>
+
+            {/* Card 03: The Status (Outline Swatch + Image Crop) */}
+            <div className="strategy-sheet flex flex-col items-start border border-[#2D070B]/10 bg-white/40 p-8 rounded-sm min-h-[380px] relative shadow-sm">
+              <div className="absolute top-4 right-4 font-mono text-[9px] opacity-40">BOARD 03</div>
+              <span className="text-[11px] font-mono text-[#E64648] tracking-widest mb-6">PILLAR // 03</span>
+              <h4 className="font-cairo text-heading-md font-bold text-[#2D070B] mb-4">
+                {language === 'ar' ? 'السيادة والوقار' : 'SOVEREIGN STATUS'}
+              </h4>
+              <p className="font-cairo text-body-sm opacity-80 leading-relaxed mb-6">
+                {language === 'ar'
+                  ? 'مكانة مستقرة تليق بأستاذ الصنعة. تقديم تجربة طعام تحترم ذائقة العميل وتضع معايير جديدة للفئة بأكملها.'
+                  : 'A status fitting the category godfather. Establishing a culinary baseline that other fast-food brands must align to.'}
+              </p>
+              <div className="w-full h-24 mt-auto overflow-hidden rounded-sm relative border border-[#2D070B]/10">
+                <img
+                  src="/images/packaging_mockup.png"
+                  alt="Status packaging"
+                  className="w-full h-full object-cover opacity-85 hover:scale-105 transition-transform duration-500"
+                />
+              </div>
             </div>
+
           </div>
 
-          <div className="font-body text-body opacity-80 max-w-xl mx-auto leading-relaxed mt-6">
+          <p className="font-cairo text-body opacity-85 max-w-2xl text-center px-4 leading-relaxed mt-4">
             {language === 'ar'
-              ? 'العراب ليس شعارًا نرفعه، بل هو النتيجة الطبيعية لاجتماع سنين الخبرة الطويلة مع الإحاطة التامة بأسرار وإتقان المهنة.'
+              ? 'العراب ليس ادعاءً تسويقيًا نروجه، بل هو الحقيقة الحتمية التي تظهر بمجرد تكامل السنين، معرفة الصنعة، والالتزام المطلق بالإنتاج الحقيقي.'
               : 'Al-Arrab is not a commercial claim, but the logical output when cumulative decades of experience merge with complete craft secrets.'}
-          </div>
+          </p>
         </div>
       </section>
     </div>
