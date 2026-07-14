@@ -181,7 +181,7 @@ export default function Discovery() {
         
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full max-w-7xl mx-auto">
           {/* Left Side: rotated English Annotation */}
-          <div className="lg:col-span-3 flex lg:justify-start justify-center items-center h-full relative">
+          <div className="lg:col-span-3 flex lg:justify-start justify-center items-center h-full relative order-last lg:order-first">
             <div className="flex items-center gap-4 lg:rotate-90 origin-left lg:translate-x-12 whitespace-nowrap">
               <span className="h-[1px] w-12 bg-[#2D070B]/30" />
               <span className="font-mono text-[9px] md:text-[10px] tracking-[0.3em] uppercase opacity-60">
@@ -191,7 +191,7 @@ export default function Discovery() {
           </div>
 
           {/* Right Side: Dominant Arabic Statement */}
-          <div className="lg:col-span-9 flex flex-col justify-center items-start gap-8 w-full">
+          <div className="lg:col-span-9 flex flex-col justify-center items-start gap-8 w-full order-first lg:order-last">
             <h2 className="font-cairo text-[#E64648] text-display-xl font-black leading-[1.1] tracking-tighter select-none w-full text-start">
               {language === 'ar' ? 'الشاورما في كل مكان.' : 'SHAWARMA IS EVERYWHERE.'}
             </h2>
@@ -203,7 +203,7 @@ export default function Discovery() {
       </section>
 
       {/* Part C: Category Noise Wall */}
-      <section ref={noiseWallRef} className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#F1EEE8]">
+      <section ref={noiseWallRef} className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#F1EEE8] overflow-hidden">
         <SectionHeader
           label={language === 'ar' ? 'ضوضاء السوق' : 'CATEGORY NOISE'}
           number="01 / 08"
@@ -250,7 +250,7 @@ export default function Discovery() {
           {/* Left Column: Giant +30 Number */}
           <div className="lg:col-span-5 flex justify-center lg:justify-start items-center">
             <div className="turning-number font-mono text-[22vw] lg:text-[18vw] font-bold text-[#F1EEE8] leading-none tracking-tighter select-none">
-              +30
+              {language === 'ar' ? '٣٠+' : '30+'}
             </div>
           </div>
 
