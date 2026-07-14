@@ -247,20 +247,22 @@ export default function Discovery() {
         />
         
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full max-w-7xl mx-auto">
-          {/* Left Column: Giant +30 Number */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-start items-center">
-            <div className="turning-number font-mono text-[22vw] lg:text-[18vw] font-bold text-[#F1EEE8] leading-none tracking-tighter select-none">
-              {language === 'ar' ? '٣٠+' : '30+'}
-            </div>
+          {/* Left Column: Headline (Visual Hero) */}
+          <div className="lg:col-span-8 flex flex-col justify-center items-start gap-4 text-start">
+            <span className="font-mono text-xs tracking-[0.3em] uppercase opacity-60">
+              {language === 'ar' ? 'الخبرة التراكمية' : 'THE HISTORICAL DEPTH'}
+            </span>
+            <h4 className="turning-sub font-cairo text-heading-lg lg:text-display-md font-black leading-[1.1] tracking-tighter py-1">
+              {language === 'ar' ? 'خبرة في الصنعة.' : 'YEARS OF CRAFT MASTERY.'}
+            </h4>
           </div>
 
-          {/* Right Column: Strategic Text Content */}
-          <div className="lg:col-span-7 flex flex-col justify-center items-start gap-6 text-start">
-            <h4 className="turning-sub font-cairo text-heading-lg lg:text-display-md font-black leading-[1.2] uppercase tracking-tight py-1">
-              {language === 'ar' ? 'سنة خبرة في الصنعة' : 'YEARS OF CRAFT MASTERY'}
-            </h4>
-            <div className="h-[1px] w-24 bg-[#F1EEE8]/40 my-2" />
-            <p className="turning-desc font-cairo text-body-lg lg:text-heading-sm opacity-90 leading-relaxed max-w-2xl">
+          {/* Right Column: Numeral & Description (Supporting Composition) */}
+          <div className="lg:col-span-4 flex flex-col justify-center items-start gap-6 text-start lg:border-s lg:border-[#F1EEE8]/20 lg:ps-8">
+            <div className="turning-number font-mono text-[7vw] lg:text-[5vw] font-bold text-[#F1EEE8] leading-none select-none">
+              {language === 'ar' ? '٣٠+' : '30+'}
+            </div>
+            <p className="turning-desc font-cairo text-body-lg opacity-85 leading-relaxed">
               {language === 'ar'
                 ? 'أكثر من ٣٠ سنة في الصنعة. خبرة لا تبنى في حملة، بل تصنعها السنين.'
                 : 'More than 30 years of professional restaurant mastery in Saudi Arabia. Built over decades, not templates.'}
