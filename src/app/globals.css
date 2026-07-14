@@ -1,26 +1,476 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ========================================
+   SHAWARMA AL-ARRAB — Design System
+   ======================================== */
+
+@theme {
+  /* ── Colors ── */
+  --color-cream: #F1EEE8;
+  --color-red: #E64648;
+  --color-burgundy: #2D070B;
+  --color-cream-dark: #E5E0D8;
+  --color-red-dark: #C83A3C;
+  --color-burgundy-light: #4A1018;
+
+  /* ── Fonts ── */
+  --font-cairo: var(--font-cairo-var), "Cairo", "Noto Sans Arabic", sans-serif;
+  --font-grotesk: var(--font-grotesk-var), "Space Grotesk", sans-serif;
+  --font-mono: var(--font-mono-var), "JetBrains Mono", monospace;
+
+  /* ── Spacing Scale ── */
+  --spacing-section: 12rem;
+  --spacing-chapter: 8rem;
+  --spacing-block: 4rem;
+  --spacing-element: 2rem;
+
+  /* ── Typography Scale ── */
+  --text-display-hero: clamp(4rem, 15vw, 12rem);
+  --text-display-xl: clamp(3rem, 10vw, 8rem);
+  --text-display-lg: clamp(2.5rem, 8vw, 6rem);
+  --text-display-md: clamp(2rem, 5vw, 4rem);
+  --text-heading-lg: clamp(1.5rem, 3vw, 2.5rem);
+  --text-heading-md: clamp(1.25rem, 2.5vw, 2rem);
+  --text-heading-sm: clamp(1rem, 2vw, 1.5rem);
+  --text-body-lg: clamp(1.125rem, 1.5vw, 1.375rem);
+  --text-body: clamp(1rem, 1.25vw, 1.125rem);
+  --text-body-sm: clamp(0.875rem, 1vw, 1rem);
+  --text-caption: clamp(0.6875rem, 0.8vw, 0.8125rem);
+  --text-micro: clamp(0.625rem, 0.7vw, 0.6875rem);
+
+  /* ── Line Heights ── */
+  --leading-display: 0.9;
+  --leading-heading: 1.1;
+  --leading-body: 1.6;
+  --leading-tight: 1.2;
+
+  /* ── Transitions ── */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-circ: cubic-bezier(0.85, 0, 0.15, 1);
+  --duration-fast: 200ms;
+  --duration-normal: 400ms;
+  --duration-slow: 800ms;
+  --duration-slower: 1200ms;
+
+  /* ── Z-Index ── */
+  --z-cursor: 9999;
+  --z-overlay: 100;
+  --z-nav: 90;
+  --z-progress: 80;
+  --z-content: 10;
+  --z-base: 1;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+::selection {
+  background-color: var(--color-red);
+  color: var(--color-cream);
+}
+
+html {
+  background-color: var(--color-cream);
+  color: var(--color-burgundy);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-cairo);
+  line-height: var(--leading-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── RTL / LTR ── */
+[dir="rtl"] body {
+  font-family: var(--font-cairo);
+}
+
+[dir="ltr"] body {
+  font-family: var(--font-grotesk);
+}
+
+/* ========================================
+   TYPOGRAPHY UTILITIES
+   ======================================== */
+
+.font-display {
+  font-weight: 900;
+  line-height: var(--leading-display);
+  letter-spacing: -0.02em;
+}
+
+.font-heading {
+  font-weight: 700;
+  line-height: var(--leading-heading);
+}
+
+.font-editorial {
+  font-family: var(--font-grotesk);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.font-meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.font-arabic-display {
+  font-family: var(--font-cairo);
+  font-weight: 900;
+  line-height: 0.95;
+}
+
+.font-english-display {
+  font-family: var(--font-grotesk);
+  font-weight: 700;
+  line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+}
+
+/* ========================================
+   COLOR FIELDS
+   ======================================== */
+
+.bg-field-cream {
+  background-color: var(--color-cream);
+  color: var(--color-burgundy);
+}
+
+.bg-field-red {
+  background-color: var(--color-red);
+  color: var(--color-cream);
+}
+
+.bg-field-burgundy {
+  background-color: var(--color-burgundy);
+  color: var(--color-cream);
+}
+
+/* ========================================
+   LAYOUT UTILITIES
+   ======================================== */
+
+.section-padding {
+  padding-inline: clamp(2rem, 8vw, 12rem);
+}
+
+.section-padding-narrow {
+  padding-inline: clamp(2rem, 10vw, 16rem);
+}
+
+.full-height {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-editorial {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(1rem, 2vw, 2rem);
+}
+
+/* ========================================
+   CHAPTER NUMBERING
+   ======================================== */
+
+.chapter-number {
+  font-family: var(--font-mono);
+  font-size: var(--text-display-hero);
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0.06;
+  position: absolute;
+  user-select: none;
+  pointer-events: none;
+}
+
+.chapter-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+/* ========================================
+   STRATEGIC ANNOTATIONS
+   ======================================== */
+
+.annotation {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.4;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.125rem;
+}
+
+.annotation-line {
+  width: 3rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.2;
+}
+
+/* ========================================
+   ANIMATION CLASSES
+   ======================================== */
+
+.reveal-text {
+  clip-path: inset(0 0 100% 0);
+  will-change: clip-path;
+}
+
+.reveal-text.is-visible {
+  clip-path: inset(0 0 0% 0);
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(2rem);
+  will-change: opacity, transform;
+}
+
+.fade-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.line-mask {
+  overflow: hidden;
+}
+
+.line-mask > * {
+  transform: translateY(105%);
+  will-change: transform;
+}
+
+.line-mask.is-visible > * {
+  transform: translateY(0);
+}
+
+/* ========================================
+   NOISE WALL (Category Noise Chapter)
+   ======================================== */
+
+.noise-word {
+  transition: all 0.5s var(--ease-out-expo);
+  will-change: transform, opacity, filter;
+}
+
+.noise-word.is-fading {
+  opacity: 0;
+  filter: blur(8px);
+  transform: scale(0.9);
+}
+
+/* ========================================
+   CUSTOM CURSOR
+   ======================================== */
+
+.cursor-hidden,
+.cursor-hidden * {
+  cursor: none !important;
+}
+
+@media (pointer: coarse) {
+  .cursor-hidden,
+  .cursor-hidden * {
+    cursor: auto !important;
+  }
+}
+
+/* ========================================
+   SCROLLBAR
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-burgundy);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-red);
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal-text,
+  .fade-up,
+  .line-mask > * {
+    clip-path: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ========================================
+   RESPONSIVE UTILITIES
+   ======================================== */
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding-inline: 1.25rem;
+  }
+
+  .chapter-number {
+    font-size: clamp(4rem, 25vw, 8rem);
+  }
+
+  .grid-editorial {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================
+   STRATEGIC DIAGRAM STYLES
+   ======================================== */
+
+.positioning-axis {
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0.3;
+}
+
+.positioning-label {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  fill: currentColor;
+  opacity: 0.5;
+}
+
+.positioning-point {
+  transition: all 0.6s var(--ease-out-expo);
+}
+
+.positioning-point.is-active {
+  fill: var(--color-red);
+  r: 8;
+}
+
+/* ========================================
+   VOICE TRANSFORMATION
+   ======================================== */
+
+.voice-before {
+  text-decoration: line-through;
+  text-decoration-color: var(--color-red);
+  text-decoration-thickness: 2px;
+  opacity: 0.4;
+  transition: opacity 0.6s var(--ease-out-expo);
+}
+
+.voice-after {
+  font-weight: 700;
+  color: var(--color-burgundy);
+}
+
+/* ========================================
+   PACKAGING WIREFRAME
+   ======================================== */
+
+.wireframe-box {
+  border: 1px solid currentColor;
+  opacity: 0.8;
+  position: relative;
+}
+
+.wireframe-box::before {
+  content: attr(data-label);
+  position: absolute;
+  top: -0.5rem;
+  inset-inline-start: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  background: inherit;
+  padding: 0 0.25rem;
+}
+
+/* ========================================
+   SOCIAL FEED SIMULATION
+   ======================================== */
+
+.social-card {
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  position: relative;
+}
+
+.social-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(45, 7, 11, 0.8) 0%,
+    transparent 60%
+  );
 }

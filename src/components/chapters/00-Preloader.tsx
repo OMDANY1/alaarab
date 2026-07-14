@@ -1,0 +1,146 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { useLanguage } from '@/context/LanguageContext';
+
+interface PreloaderProps {
+  onComplete: () => void;
+}
+
+export default function Preloader({ onComplete }: PreloaderProps) {
+  const { language } = useLanguage();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const numberRef = useRef<HTMLDivElement>(null);
+  const labelRef = useRef<HTMLDivElement>(null);
+  const [count, setCount] = useState(30);
+
+  useEffect(() => {
+    // Prevent scrolling while loading
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
+    const ctx = gsap.context(() => {
+      // Countdown animation from 30 down
+      const counterObj = { value: 30 };
+      const tl = gsap.timeline({
+        onComplete: () => {
+          // Slide up and fade out overlay
+          gsap.to(containerRef.current, {
+            yPercent: -100,
+            duration: 1,
+            ease: 'power4.inOut',
+            onComplete: () => {
+              document.body.style.overflow = '';
+              document.documentElement.style.overflow = '';
+              onComplete();
+            },
+          });
+        },
+      });
+
+      // Quick numbers countdown flashing
+      tl.to(counterObj, {
+        value: 0,
+        duration: 1.8,
+        ease: 'power2.out',
+        onUpdate: () => {
+          const currentVal = Math.ceil(counterObj.value);
+          // Only update state to create visual flashing
+          setCount(currentVal);
+        },
+      });
+
+      // Scale up count during countdown
+      tl.fromTo(
+        numberRef.current,
+        { scale: 0.8, opacity: 0.3 },
+        { scale: 1, opacity: 1, duration: 1.5, ease: 'power2.out' },
+        0
+      );
+
+      // Fade in labels sequentially
+      tl.to(numberRef.current, {
+        opacity: 0,
+        y: -30,
+        duration: 0.4,
+        ease: 'power2.in',
+      }, '+=0.1');
+
+      // Show final +30 years / +30 سنة
+      tl.set(numberRef.current, {
+        innerHTML: language === 'ar' ? '+٣٠ سنة' : '+30 YEARS',
+        y: 30,
+      });
+
+      tl.to(numberRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+
+      // Show 'خبرة' / 'MASTERY'
+      tl.fromTo(
+        labelRef.current,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+          innerHTML: language === 'ar' ? 'خبرة.' : 'MASTERY.',
+        },
+        '-=0.2'
+      );
+
+      tl.to([numberRef.current, labelRef.current], {
+        opacity: 0,
+        y: -20,
+        duration: 0.4,
+        ease: 'power2.in',
+        delay: 0.8,
+      });
+
+    }, containerRef);
+
+    return () => {
+      ctx.revert();
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [language, onComplete]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#2D070B] text-[#F1EEE8] select-none"
+    >
+      <div className="flex flex-col items-center gap-4">
+        <div
+          ref={numberRef}
+          className="font-mono text-[12vw] md:text-[8vw] font-bold leading-none tracking-tighter text-[#E64648]"
+        >
+          {count}
+        </div>
+        <div
+          ref={labelRef}
+          className="font-display text-[4vw] md:text-[2vw] font-black text-[#F1EEE8] tracking-widest uppercase"
+        >
+          {language === 'ar' ? 'جاري التحميل...' : 'LOADING...'}
+        </div>
+      </div>
+      
+      {/* Decorative brand annotations */}
+      <div className="absolute bottom-12 flex flex-col items-center gap-2 text-center opacity-30">
+        <span className="font-mono text-xs tracking-[0.2em] uppercase">
+          {language === 'ar' ? 'شاورما العراب' : 'SHAWARMA AL-ARRAB'}
+        </span>
+        <span className="h-[1px] w-12 bg-[#F1EEE8]" />
+        <span className="font-mono text-[9px] tracking-[0.15em] uppercase">
+          {language === 'ar' ? 'مفهوم الهوية والاستراتيجية' : 'BRAND IDENTITY & STRATEGY'}
+        </span>
+      </div>
+    </div>
+  );
+}

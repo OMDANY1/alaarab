@@ -1,0 +1,9 @@
+export { default as Preloader } from './00-Preloader';
+export { default as Discovery } from './01-Discovery';
+export { default as Insight } from './02-Insight';
+export { default as BrandIdea } from './03-BrandIdea';
+export { default as Strategy } from './04-Strategy';
+export { default as Voice } from './05-Voice';
+export { default as Visual } from './06-Visual';
+export { default as Experience } from './07-Experience';
+export { default as Future } from './08-Future';
