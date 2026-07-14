@@ -52,7 +52,7 @@ export default function Navigation({ onToggleIndex }: NavigationProps) {
       className={`
         fixed top-0 inset-x-0 z-50
         flex items-center justify-between
-        px-[clamp(2rem,8vw,12rem)]
+        section-padding
         transition-all duration-500 ease-out
         ${scrolled
           ? 'py-4 bg-[#F1EEE8]/90 backdrop-blur-md border-b border-[#2D070B]/5 shadow-sm text-[#2D070B]'

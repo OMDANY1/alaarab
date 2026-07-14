@@ -88,7 +88,7 @@ export default function FullScreenIndex({ isOpen, onClose }: FullScreenIndexProp
           }}
         >
           {/* Header with close button */}
-          <div className="flex items-center justify-between px-[clamp(2rem,8vw,12rem)] py-6 md:py-8">
+          <div className="flex items-center justify-between section-padding py-6 md:py-8">
             <span className="font-[family-name:var(--font-mono)] text-[10px] md:text-[11px] tracking-[0.2em] uppercase opacity-50">
               {language === 'ar' ? 'الفهرس' : 'INDEX'}
             </span>
@@ -116,7 +116,7 @@ export default function FullScreenIndex({ isOpen, onClose }: FullScreenIndexProp
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="flex-1 flex flex-col justify-center px-[clamp(2rem,8vw,12rem)] py-10"
+            className="flex-1 flex flex-col justify-center section-padding py-10"
           >
             {chapters.map((chapter) => (
               <motion.button
@@ -179,7 +179,7 @@ export default function FullScreenIndex({ isOpen, onClose }: FullScreenIndexProp
           </motion.div>
 
           {/* Footer */}
-          <div className="px-[clamp(2rem,8vw,12rem)] py-6 flex items-center justify-between">
+          <div className="section-padding py-6 flex items-center justify-between">
             <span className="font-[family-name:var(--font-mono)] text-[9px] tracking-[0.2em] uppercase opacity-30">
               {language === 'ar' ? 'شاورما العراب — مفهوم العلامة' : 'SHAWARMA AL-ARRAB — BRAND CONCEPT'}
             </span>

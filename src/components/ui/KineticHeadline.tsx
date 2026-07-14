@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useMemo } from 'react';
+import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -26,29 +26,13 @@ export default function KineticHeadline({
 
   const isArabic = language === 'ar';
 
-  // Split text into animatable units: words for Arabic, characters for English
-  const units = useMemo(() => {
-    if (isArabic) {
-      // Word-level splitting for Arabic to preserve letter connections
-      return text.split(/\s+/).map((word) => ({ text: word, isSpace: false }));
-    } else {
-      // Character-level splitting for English
-      const chars: { text: string; isSpace: boolean }[] = [];
-      for (const char of text) {
-        chars.push({ text: char, isSpace: char === ' ' });
-      }
-      return chars;
-    }
-  }, [text, isArabic]);
-
   useGSAP(
     () => {
       if (!containerRef.current) return;
 
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (prefersReduced) {
-        // Just make everything visible immediately
-        gsap.set(containerRef.current.querySelectorAll('.kinetic-unit'), {
+        gsap.set(containerRef.current.querySelectorAll('.kinetic-target'), {
           opacity: 1,
           y: 0,
           scale: 1,
@@ -57,53 +41,50 @@ export default function KineticHeadline({
         return;
       }
 
-      const elements = containerRef.current.querySelectorAll('.kinetic-unit');
-      if (!elements.length) return;
+      const element = containerRef.current.querySelector('.kinetic-target');
+      if (!element) return;
 
       let fromVars: gsap.TweenVars = {};
       let toVars: gsap.TweenVars = {};
 
       switch (animationType) {
         case 'reveal':
-          fromVars = { opacity: 0, y: '100%', rotateX: -90 };
+          fromVars = { opacity: 0, y: '25px', rotateX: -8 };
           toVars = {
             opacity: 1,
             y: '0%',
             rotateX: 0,
             duration: 0.8,
             ease: 'power3.out',
-            stagger: isArabic ? 0.08 : 0.03,
           };
           break;
         case 'slide':
-          fromVars = { opacity: 0, x: isArabic ? 60 : -60 };
+          fromVars = { opacity: 0, x: isArabic ? 35 : -35 };
           toVars = {
             opacity: 1,
             x: 0,
             duration: 0.7,
             ease: 'power2.out',
-            stagger: isArabic ? 0.06 : 0.02,
           };
           break;
         case 'scale':
-          fromVars = { opacity: 0, scale: 0.3, filter: 'blur(10px)' };
+          fromVars = { opacity: 0, scale: 0.9, filter: 'blur(8px)' };
           toVars = {
             opacity: 1,
             scale: 1,
             filter: 'blur(0px)',
-            duration: 0.9,
-            ease: 'back.out(1.7)',
-            stagger: isArabic ? 0.1 : 0.04,
+            duration: 0.8,
+            ease: 'power3.out',
           };
           break;
       }
 
-      gsap.fromTo(elements, fromVars, {
+      gsap.fromTo(element, fromVars, {
         ...toVars,
         scrollTrigger: {
           trigger: containerRef.current,
-          start: 'top 80%',
-          end: 'bottom 20%',
+          start: 'top 85%',
+          end: 'bottom 15%',
           toggleActions: 'play none none reverse',
         },
       });
@@ -112,8 +93,8 @@ export default function KineticHeadline({
   );
 
   const fontClass = isArabic
-    ? 'font-[family-name:var(--font-cairo)]'
-    : 'font-[family-name:var(--font-grotesk)]';
+    ? 'font-cairo'
+    : 'font-grotesk';
 
   const leadingClass = isArabic ? 'leading-[1.25] py-2' : 'leading-[1.0] py-2';
   
@@ -121,36 +102,19 @@ export default function KineticHeadline({
   const sizeClass = hasCustomSize ? '' : 'text-[8vw] md:text-[10vw] lg:text-[12vw] xl:text-[15vw]';
 
   return (
-    <div ref={containerRef} className="overflow-hidden py-1">
+    <div ref={containerRef} className="relative overflow-hidden py-1">
       <Tag
         className={`
+          kinetic-target
           ${fontClass}
           ${leadingClass}
           ${sizeClass}
           font-bold tracking-tighter
           ${className}
         `}
-        style={{ perspective: '1000px' }}
+        style={{ perspective: '1000px', transformOrigin: 'center bottom' }}
       >
-        {units.map((unit, index) =>
-          unit.isSpace ? (
-            <span key={index} className="inline-block w-[0.25em]" />
-          ) : (
-            <span
-              key={index}
-              className="kinetic-unit inline-block will-change-transform"
-              style={{
-                transformOrigin: 'center bottom',
-                // Add word spacing for Arabic
-                ...(isArabic && index < units.length - 1
-                  ? { marginInlineEnd: '0.3em' }
-                  : {}),
-              }}
-            >
-              {unit.text}
-            </span>
-          )
-        )}
+        {text}
       </Tag>
     </div>
   );

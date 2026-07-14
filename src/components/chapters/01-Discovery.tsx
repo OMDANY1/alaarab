@@ -185,7 +185,7 @@ export default function Discovery() {
           label={language === 'ar' ? 'الباب الأول / المشكلة' : 'CHAPTER 01 / THE TENSION'}
           number="01 / 08"
         />
-        <div className="flex-1 flex flex-col justify-center max-w-6xl mx-auto w-full gap-8">
+        <div className="flex-1 flex flex-col justify-center max-w-6xl mx-auto w-full gap-16 md:gap-24">
           <KineticHeadline
             tag="h2"
             text={language === 'ar' ? 'الشاورما في كل مكان.' : 'SHAWARMA IS EVERYWHERE.'}
