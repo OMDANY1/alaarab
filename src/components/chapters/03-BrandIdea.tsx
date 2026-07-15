@@ -83,6 +83,20 @@ export default function BrandIdea() {
         duration: 0.8,
         ease: 'power2.out',
       }, '-=0.4');
+
+      // ── Strategy Board Sheets Fade In (Desktop) ──
+      const tlBoard = gsap.timeline({
+        scrollTrigger: {
+          trigger: boardRef.current,
+          start: 'top 75%',
+          toggleActions: 'play none none reverse',
+        },
+      });
+
+      tlBoard.fromTo('.strategy-sheet',
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, stagger: 0.25, duration: 1.0, ease: 'power3.out' }
+      );
     });
 
     // Mobile and tablet scroll-pinned timeline (Under 1024px)
@@ -149,21 +163,21 @@ export default function BrandIdea() {
 
       // Silence pause at end
       tlBuild.to({}, { duration: 0.4 });
-    });
 
-    // ── Strategy Board Sheets Fade In ──
-    const tlBoard = gsap.timeline({
-      scrollTrigger: {
-        trigger: boardRef.current,
-        start: 'top 75%',
-        toggleActions: 'play none none reverse',
-      },
-    });
+      // ── Strategy Board Sheets Fade In (Mobile) ──
+      const tlBoard = gsap.timeline({
+        scrollTrigger: {
+          trigger: boardRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+        },
+      });
 
-    tlBoard.fromTo('.strategy-sheet',
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, stagger: 0.25, duration: 1.0, ease: 'power3.out' }
-    );
+      tlBoard.fromTo('.strategy-sheet',
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, stagger: 0.15, duration: 0.8, ease: 'power3.out' }
+      );
+    });
 
     return () => {
       mm.revert();
