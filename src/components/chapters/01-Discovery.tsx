@@ -157,33 +157,33 @@ export default function Discovery() {
 
       words.forEach((word: any, i) => {
         const angle = (i / words.length) * Math.PI * 2;
-        const radius = 30 + Math.random() * 30;
+        const radius = 25 + Math.random() * 25;
         const x = Math.cos(angle) * radius;
         const y = Math.sin(angle) * radius;
 
         gsap.set(word, {
-          x: x * 0.7,
-          y: y * 0.7,
-          scale: 0.5 + Math.random() * 0.3,
-          opacity: 0.08 + Math.random() * 0.2,
-          rotation: -6 + Math.random() * 12,
+          x: x * 0.65,
+          y: y * 0.65,
+          scale: 0.45 + Math.random() * 0.25,
+          opacity: 0.06 + Math.random() * 0.18,
+          rotation: -5 + Math.random() * 10,
         });
       });
 
       tlNoise.to(words, {
         x: 0,
         y: 0,
-        scale: 1.1,
-        opacity: 0.65,
+        scale: 1.05,
+        opacity: 0.6,
         filter: 'blur(0px)',
-        stagger: 0.01,
+        stagger: 0.008,
         duration: 1.0,
       })
       .to(words, {
         scale: 0.3,
         opacity: 0,
-        filter: 'blur(10px)',
-        stagger: 0.005,
+        filter: 'blur(8px)',
+        stagger: 0.004,
         duration: 0.8,
       })
       .to({}, { duration: 0.3 });
@@ -330,7 +330,7 @@ export default function Discovery() {
           {phrases.map((phrase, i) => (
             <div
               key={i}
-              className={`noise-word-motion absolute pointer-events-none select-none ${i % 2 === 0 ? 'max-lg:hidden' : ''}`}
+              className="noise-word-motion absolute pointer-events-none select-none"
             >
               <span className="noise-word font-cairo text-[4vw] md:text-[2.5vw] font-black text-[#2D070B] whitespace-nowrap">
                 {phrase}
