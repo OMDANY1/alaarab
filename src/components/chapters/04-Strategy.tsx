@@ -37,7 +37,7 @@ export default function Strategy() {
       { scale: 0, opacity: 0, x: 0, y: 0 },
       { scale: 1.2, opacity: 1, x: 120, y: -100, duration: 1.2, ease: 'power4.out' }
     )
-    .fromTo('.arrab-label',
+    .fromTo('.arrab-label-motion',
       { opacity: 0, y: 10 },
       { opacity: 1, y: 0, duration: 0.4 },
       '-=0.4'
@@ -145,9 +145,11 @@ export default function Strategy() {
               <g className="arrab-dot">
                 <circle cx="0" cy="0" r="8" fill="#E64648" />
                 <circle cx="0" cy="0" r="14" stroke="#E64648" strokeWidth="1" fill="none" className="animate-ping" />
-                <text x="12" y="4" className="arrab-label font-display font-black text-[10px] fill-[#2D070B] tracking-wide">
-                  {language === 'ar' ? 'العراب' : 'AL-ARRAB'}
-                </text>
+                <g className="arrab-label-motion">
+                  <text x="12" y="4" className="arrab-label font-display font-black text-[10px] fill-[#2D070B] tracking-wide">
+                    {language === 'ar' ? 'العراب' : 'AL-ARRAB'}
+                  </text>
+                </g>
               </g>
             </svg>
           </div>
