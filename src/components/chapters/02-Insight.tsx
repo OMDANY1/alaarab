@@ -24,71 +24,96 @@ export default function Insight() {
   const stepsEn = ['AL-ARRAB', 'THE GODFATHER', 'THE MENTOR', 'THE EXPERT', 'MASTER OF THE CRAFT'];
 
   useGSAP(() => {
-    // ── Evolution Sequence (Pinned Stack & Line Reveals) ──
-    const steps = gsap.utils.toArray('.evolution-step');
-    const tlEvolution = gsap.timeline({
-      scrollTrigger: {
-        trigger: evolutionRef.current,
-        start: 'top top',
-        end: '+=200%',
-        scrub: 1,
-        pin: true,
-      },
-    });
+    let mm = gsap.matchMedia();
 
-    gsap.set(steps, { opacity: 0, y: 40, scale: 0.95 });
-    
-    // Animate grid guidelines
-    tlEvolution.fromTo('.ev-line-y',
-      { scaleY: 0 },
-      { scaleY: 1, duration: 0.5, ease: 'none' },
-      0
-    );
+    // Desktop only scroll-pin timelines (1024px and above)
+    mm.add("(min-width: 1024px)", () => {
+      // ── Evolution Sequence (Pinned Stack & Line Reveals) ──
+      const steps = gsap.utils.toArray('.evolution-step');
+      const tlEvolution = gsap.timeline({
+        scrollTrigger: {
+          trigger: evolutionRef.current,
+          start: 'top top',
+          end: '+=200%',
+          scrub: 1,
+          pin: true,
+        },
+      });
 
-    steps.forEach((step: any, index) => {
-      tlEvolution.to(step, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        color: index === steps.length - 1 ? '#E64648' : '#F1EEE8',
-        duration: 1,
-        ease: 'power3.out',
-      })
-      .to(step, {
-        opacity: index === steps.length - 1 ? 1 : 0.05,
-        y: index === steps.length - 1 ? 0 : -30,
-        scale: index === steps.length - 1 ? 1.05 : 0.95,
-        duration: 0.8,
-        delay: 0.4,
+      gsap.set(steps, { opacity: 0, y: 40, scale: 0.95 });
+      
+      // Animate grid guidelines
+      tlEvolution.fromTo('.ev-line-y',
+        { scaleY: 0 },
+        { scaleY: 1, duration: 0.5, ease: 'none' },
+        0
+      );
+
+      steps.forEach((step: any, index) => {
+        tlEvolution.to(step, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          color: index === steps.length - 1 ? '#E64648' : '#F1EEE8',
+          duration: 1,
+          ease: 'power3.out',
+        })
+        .to(step, {
+          opacity: index === steps.length - 1 ? 1 : 0.05,
+          y: index === steps.length - 1 ? 0 : -30,
+          scale: index === steps.length - 1 ? 1.05 : 0.95,
+          duration: 0.8,
+          delay: 0.4,
+        });
+      });
+
+      // ── Connection Scroll Statements (Asymmetric Reveal) ──
+      const tlStatements = gsap.timeline({
+        scrollTrigger: {
+          trigger: statementRef.current,
+          start: 'top top',
+          end: '+=150%',
+          scrub: 1,
+          pin: true,
+        },
+      });
+
+      const lines = gsap.utils.toArray('.stmt-line');
+      gsap.set(lines, { opacity: 0, y: 30 });
+
+      lines.forEach((line: any, index) => {
+        tlStatements.to(line, {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+        })
+        .to(line, {
+          opacity: index === lines.length - 1 ? 1 : 0.1,
+          y: index === lines.length - 1 ? 0 : -15,
+          duration: 0.8,
+          delay: 0.4,
+        });
       });
     });
 
-    // ── Connection Scroll Statements (Asymmetric Reveal) ──
-    const tlStatements = gsap.timeline({
-      scrollTrigger: {
-        trigger: statementRef.current,
-        start: 'top top',
-        end: '+=150%',
-        scrub: 1,
-        pin: true,
-      },
-    });
+    // Mobile/Tablet natural vertical scroll layout fallback (Under 1024px)
+    mm.add("(max-width: 1023px)", () => {
+      const steps = gsap.utils.toArray('.evolution-step');
+      const lines = gsap.utils.toArray('.stmt-line');
 
-    const lines = gsap.utils.toArray('.stmt-line');
-    gsap.set(lines, { opacity: 0, y: 30 });
-
-    lines.forEach((line: any, index) => {
-      tlStatements.to(line, {
+      gsap.set(steps, {
+        clearProps: "all",
+      });
+      gsap.set(steps, {
         opacity: 1,
         y: 0,
-        duration: 1.2,
-        ease: 'power3.out',
-      })
-      .to(line, {
-        opacity: index === lines.length - 1 ? 1 : 0.1,
-        y: index === lines.length - 1 ? 0 : -15,
-        duration: 0.8,
-        delay: 0.4,
+        scale: 1,
+      });
+
+      gsap.set(lines, {
+        opacity: 1,
+        y: 0,
       });
     });
 
@@ -116,6 +141,9 @@ export default function Insight() {
       '-=0.4'
     );
 
+    return () => {
+      mm.revert();
+    };
   }, { scope: sectionRef });
 
   return (
@@ -171,7 +199,7 @@ export default function Insight() {
       </section>
 
       {/* Part C: Conceptual Evolution (Redesigned Editorial Pinned Stack) */}
-      <section ref={evolutionRef} className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#2D070B] overflow-hidden">
+      <section ref={evolutionRef} className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#2D070B] overflow-hidden max-lg:min-h-0">
         <SectionHeader
           label={language === 'ar' ? 'تطور الفكرة' : 'CONCEPT EVOLUTION'}
           number="02 / 08"
@@ -181,18 +209,21 @@ export default function Insight() {
         <div className="absolute left-1/4 top-0 bottom-0 w-[1px] bg-white/[0.03] origin-top ev-line-y scale-y-0" />
         <div className="absolute right-1/4 top-0 bottom-0 w-[1px] bg-white/[0.03] origin-top ev-line-y scale-y-0" />
 
-        <div className="flex-1 relative w-full flex items-center justify-center min-h-[50vh]">
-          <div className="absolute top-4 left-4 font-mono text-[9px] opacity-35 tracking-widest uppercase">
+        <div className="flex-1 relative w-full flex items-center justify-center min-h-[50vh] max-lg:min-h-0 max-lg:py-8">
+          <div className="absolute top-4 left-4 font-mono text-[9px] opacity-35 tracking-widest uppercase max-lg:static max-lg:mb-6 max-lg:text-center">
             {language === 'ar' ? 'سلسلة التطور الدلالي' : 'SEMANTIC CHAIN PROGRESS'}
           </div>
           
-          <div className="relative w-full max-w-4xl h-[200px] flex items-center justify-center">
+          <div className="relative w-full max-w-4xl h-[200px] flex items-center justify-center max-lg:h-auto max-lg:flex-col max-lg:gap-8 max-lg:relative">
             {(language === 'ar' ? stepsAr : stepsEn).map((step, i) => (
               <div
                 key={i}
-                className="evolution-step absolute font-cairo text-display-md lg:text-display-lg font-black tracking-tighter text-center"
+                className="evolution-step absolute lg:absolute font-cairo text-display-md lg:text-display-lg font-black tracking-tighter text-center max-lg:relative max-lg:text-heading-lg"
               >
                 {step}
+                {i < stepsAr.length - 1 && (
+                  <div className="text-[12px] opacity-30 mt-2 text-center lg:hidden">↓</div>
+                )}
               </div>
             ))}
           </div>

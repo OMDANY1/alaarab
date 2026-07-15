@@ -44,8 +44,7 @@ export default function Discovery() {
     'FINEST INGREDIENTS',
     'REAL TASTE',
     'SECRET RECIPE',
-    'LUXURY SHAWARMA',
-    'UNFORGETTABLE',
+      'UNFORGETTABLE',
     'AUTHENTIC',
     'UNMATCHED QUALITY',
   ];
@@ -53,86 +52,112 @@ export default function Discovery() {
   const phrases = language === 'ar' ? noisePhrasesAr : noisePhrasesEn;
 
   useGSAP(() => {
-    // ── Category Noise Wall Scroll Animation ──
-    const words = gsap.utils.toArray('.noise-word');
-    const tlNoise = gsap.timeline({
-      scrollTrigger: {
-        trigger: noiseWallRef.current,
-        start: 'top top',
-        end: '+=150%',
-        scrub: 1,
-        pin: true,
-      },
-    });
+    let mm = gsap.matchMedia();
 
-    // Randomize initial positions & sizes
-    words.forEach((word: any, i) => {
-      const angle = (i / words.length) * Math.PI * 2;
-      const radius = 100 + Math.random() * 200;
-      const x = Math.cos(angle) * radius;
-      const y = Math.sin(angle) * radius;
+    // Desktop timeline triggers (1024px and above)
+    mm.add("(min-width: 1024px)", () => {
+      // ── Category Noise Wall Scroll Animation ──
+      const words = gsap.utils.toArray('.noise-word');
+      const tlNoise = gsap.timeline({
+        scrollTrigger: {
+          trigger: noiseWallRef.current,
+          start: 'top top',
+          end: '+=150%',
+          scrub: 1,
+          pin: true,
+        },
+      });
 
-      gsap.set(word, {
-        x: x * 1.6,
-        y: y * 1.6,
-        scale: 0.6 + Math.random() * 0.8,
-        opacity: 0.05 + Math.random() * 0.3,
-        rotation: -15 + Math.random() * 30,
+      // Randomize initial positions & sizes
+      words.forEach((word: any, i) => {
+        const angle = (i / words.length) * Math.PI * 2;
+        const radius = 100 + Math.random() * 200;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+
+        gsap.set(word, {
+          x: x * 1.6,
+          y: y * 1.6,
+          scale: 0.6 + Math.random() * 0.8,
+          opacity: 0.05 + Math.random() * 0.3,
+          rotation: -15 + Math.random() * 30,
+        });
+      });
+
+      // Animate word collision/acceleration, blur out and disappear
+      tlNoise.to(words, {
+        x: 0,
+        y: 0,
+        scale: 1.4,
+        opacity: 0.8,
+        filter: 'blur(0px)',
+        stagger: 0.02,
+        duration: 1,
+      })
+      .to(words, {
+        scale: 0.2,
+        opacity: 0,
+        filter: 'blur(20px)',
+        stagger: 0.01,
+        duration: 0.8,
+      });
+
+      // ── The Untold Story Sticky Section (Color Narrative Transition) ──
+      const tlProblem = gsap.timeline({
+        scrollTrigger: {
+          trigger: problemRef.current,
+          start: 'top top',
+          end: '+=200%',
+          scrub: 1,
+          pin: true,
+        },
+      });
+
+      const lines = gsap.utils.toArray('.problem-line');
+      gsap.set(lines, { opacity: 0, y: 40 });
+
+      // Animate background color change from Cream to Deep Burgundy
+      tlProblem.to(problemRef.current, {
+        backgroundColor: '#2D070B',
+        color: '#F1EEE8',
+        duration: 1,
+        ease: 'none',
+      }, 0);
+
+      lines.forEach((line: any, index) => {
+        tlProblem.to(line, {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+        })
+        .to(line, {
+          opacity: index === lines.length - 1 ? 1 : 0.08,
+          y: index === lines.length - 1 ? 0 : -20,
+          duration: 0.8,
+          delay: 0.5,
+        });
       });
     });
 
-    // Animate word collision/acceleration, blur out and disappear
-    tlNoise.to(words, {
-      x: 0,
-      y: 0,
-      scale: 1.4,
-      opacity: 0.8,
-      filter: 'blur(0px)',
-      stagger: 0.02,
-      duration: 1,
-    })
-    .to(words, {
-      scale: 0.2,
-      opacity: 0,
-      filter: 'blur(20px)',
-      stagger: 0.01,
-      duration: 0.8,
-    });
+    // Mobile and tablet natural layout flow fallback (Under 1024px)
+    mm.add("(max-width: 1023px)", () => {
+      const words = gsap.utils.toArray('.noise-word');
+      const lines = gsap.utils.toArray('.problem-line');
 
-    // ── The Untold Story Sticky Section (Color Narrative Transition) ──
-    const tlProblem = gsap.timeline({
-      scrollTrigger: {
-        trigger: problemRef.current,
-        start: 'top top',
-        end: '+=200%',
-        scrub: 1,
-        pin: true,
-      },
-    });
-
-    const lines = gsap.utils.toArray('.problem-line');
-    gsap.set(lines, { opacity: 0, y: 40 });
-
-    // Animate background color change from Cream to Deep Burgundy
-    tlProblem.to(problemRef.current, {
-      backgroundColor: '#2D070B',
-      color: '#F1EEE8',
-      duration: 1,
-      ease: 'none',
-    }, 0);
-
-    lines.forEach((line: any, index) => {
-      tlProblem.to(line, {
+      // Clear any inline inline styles/transforms to allow natural relative wraps
+      gsap.set(words, {
+        clearProps: "all",
+      });
+      gsap.set(lines, {
         opacity: 1,
         y: 0,
-        duration: 1.2,
-        ease: 'power3.out',
-      })
-      .to(line, {
-        opacity: index === lines.length - 1 ? 1 : 0.08,
-        y: index === lines.length - 1 ? 0 : -20,
-        duration: 0.8,
-        delay: 0.5,
+      });
+      
+      // Ensure local variables match color shift instantly
+      gsap.set(problemRef.current, {
+        backgroundColor: '#2D070B',
+        color: '#F1EEE8',
       });
     });
 
@@ -140,7 +165,7 @@ export default function Discovery() {
     const tlTurning = gsap.timeline({
       scrollTrigger: {
         trigger: turningPointRef.current,
-        start: 'top 70%',
+        start: 'top 75%',
         toggleActions: 'play none none reverse',
       },
     });
@@ -160,6 +185,9 @@ export default function Discovery() {
       '-=0.4'
     );
 
+    return () => {
+      mm.revert();
+    };
   }, { scope: sectionRef });
 
   return (
@@ -192,10 +220,10 @@ export default function Discovery() {
 
           {/* Right Side: Dominant Arabic Statement */}
           <div className="lg:col-span-9 flex flex-col justify-center items-start gap-8 w-full order-first lg:order-last">
-            <h2 className="font-cairo text-[#E64648] text-display-xl font-black leading-[1.1] tracking-tighter select-none w-full text-start">
+            <h2 className="font-cairo text-[#E64648] text-display-xl font-black leading-[1.1] select-none w-full text-start">
               {language === 'ar' ? 'الشاورما في كل مكان.' : 'SHAWARMA IS EVERYWHERE.'}
             </h2>
-            <h3 className="font-cairo text-[#2D070B] text-heading-lg md:text-display-md font-bold leading-[1.2] tracking-tight opacity-90 text-start max-w-3xl">
+            <h3 className="font-cairo text-[#2D070B] text-heading-lg md:text-display-md font-bold leading-[1.2] opacity-90 text-start max-w-3xl">
               {language === 'ar' ? 'لكن كم مكان يعرف الصنعة فعلًا؟' : 'But how many actually know the craft?'}
             </h3>
           </div>
@@ -203,16 +231,16 @@ export default function Discovery() {
       </section>
 
       {/* Part C: Category Noise Wall */}
-      <section ref={noiseWallRef} className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#F1EEE8] overflow-hidden">
+      <section ref={noiseWallRef} className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative bg-[#F1EEE8] overflow-hidden max-lg:min-h-0">
         <SectionHeader
           label={language === 'ar' ? 'ضوضاء السوق' : 'CATEGORY NOISE'}
           number="01 / 08"
         />
-        <div className="flex-1 relative w-full flex items-center justify-center overflow-hidden min-h-[50vh]">
+        <div className="flex-1 relative w-full flex items-center justify-center overflow-hidden min-h-[50vh] max-lg:flex-wrap max-lg:gap-4 max-lg:py-12 max-lg:px-4 max-lg:min-h-0">
           {phrases.map((phrase, i) => (
             <span
               key={i}
-              className="noise-word absolute font-cairo text-[4vw] md:text-[2.5vw] font-black text-[#2D070B] whitespace-nowrap pointer-events-none opacity-20"
+              className="noise-word absolute lg:absolute font-cairo text-[4vw] md:text-[2.5vw] font-black text-[#2D070B] whitespace-nowrap pointer-events-none opacity-20 max-lg:relative max-lg:text-body-lg max-lg:opacity-65 max-lg:pointer-events-auto"
             >
               {phrase}
             </span>
@@ -252,7 +280,7 @@ export default function Discovery() {
             <span className="font-mono text-xs tracking-[0.3em] uppercase opacity-60">
               {language === 'ar' ? 'الخبرة التراكمية' : 'THE HISTORICAL DEPTH'}
             </span>
-            <h4 className="turning-sub font-cairo text-heading-lg lg:text-display-md font-black leading-[1.1] tracking-tighter py-1">
+            <h4 className="turning-sub font-cairo text-heading-lg lg:text-display-md font-black leading-[1.1] py-1">
               {language === 'ar' ? 'خبرة في الصنعة.' : 'YEARS OF CRAFT MASTERY.'}
             </h4>
           </div>

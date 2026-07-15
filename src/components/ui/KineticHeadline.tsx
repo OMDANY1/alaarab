@@ -109,7 +109,7 @@ export default function KineticHeadline({
           ${fontClass}
           ${leadingClass}
           ${sizeClass}
-          font-bold tracking-tighter
+          ${isArabic ? 'tracking-normal' : 'tracking-tighter'}
           ${className}
         `}
         style={{ perspective: '1000px', transformOrigin: 'center bottom' }}

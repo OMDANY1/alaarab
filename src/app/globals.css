@@ -23,6 +23,10 @@
   --spacing-chapter: 8rem;
   --spacing-block: 4rem;
   --spacing-element: 2rem;
+  
+  /* ── Shared Visual Safe Areas (Mobile safe area min 20px/1.25rem) ── */
+  --page-safe-x: clamp(1.25rem, 6vw, 10rem);
+  --page-safe-y: clamp(2.5rem, 8vh, 12rem);
 
   /* ── Typography Scale ── */
   --text-display-hero: clamp(4rem, 15vw, 12rem);
@@ -156,7 +160,7 @@ body {
 .font-arabic-display {
   font-family: var(--font-cairo);
   font-weight: 900;
-  line-height: 1.3;
+  line-height: 1.18;
 }
 
 .font-english-display {
@@ -165,6 +169,30 @@ body {
   line-height: 0.9;
   text-transform: uppercase;
   letter-spacing: -0.03em;
+}
+
+/* ── Explicit Arabic Typography & Safari Connection Architecture ── */
+.arabic-text,
+.arabic-display,
+.arabic-body,
+.font-cairo,
+.font-arabic-display {
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  text-transform: none !important;
+}
+
+/* Arabic leading scale */
+.leading-arabic-compact {
+  line-height: 1.08 !important;
+}
+
+.leading-arabic-standard {
+  line-height: 1.18 !important;
+}
+
+.leading-arabic-reveal-safe {
+  line-height: 1.30 !important;
 }
 
 /* ========================================
@@ -191,11 +219,11 @@ body {
    ======================================== */
 
 .section-padding {
-  padding-inline: clamp(2rem, 8vw, 12rem);
+  padding-inline: var(--page-safe-x);
 }
 
 .section-padding-narrow {
-  padding-inline: clamp(2rem, 10vw, 16rem);
+  padding-inline: clamp(1.25rem, 8vw, 14rem);
 }
 
 .full-height {

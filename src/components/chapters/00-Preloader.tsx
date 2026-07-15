@@ -16,37 +16,62 @@ export default function Preloader({ onComplete }: PreloaderProps) {
   const [count, setCount] = useState(30);
 
   useEffect(() => {
-    // Prevent scrolling while loading
+    // Prevent scrolling while loading by default
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
 
+    let skipped = false;
+
+    const handleSkip = () => {
+      if (skipped) return;
+      skipped = true;
+      
+      // Remove listeners
+      cleanupListeners();
+
+      // Animate out immediately
+      gsap.killTweensOf(containerRef.current);
+      gsap.to(containerRef.current, {
+        yPercent: -100,
+        duration: 0.4,
+        ease: 'power3.out',
+        onComplete: () => {
+          document.body.style.overflow = '';
+          document.documentElement.style.overflow = '';
+          onComplete();
+        },
+      });
+    };
+
+    const cleanupListeners = () => {
+      window.removeEventListener('click', handleSkip);
+      window.removeEventListener('wheel', handleSkip);
+      window.removeEventListener('touchmove', handleSkip);
+    };
+
+    // Attach immediate-exit event listeners
+    window.addEventListener('click', handleSkip);
+    window.addEventListener('wheel', handleSkip, { passive: true });
+    window.addEventListener('touchmove', handleSkip, { passive: true });
+
     const ctx = gsap.context(() => {
-      // Countdown animation from 30 down
+      // Countdown animation from 30 down (compressed timing)
       const counterObj = { value: 30 };
       const tl = gsap.timeline({
         onComplete: () => {
-          // Slide up and fade out overlay
-          gsap.to(containerRef.current, {
-            yPercent: -100,
-            duration: 1,
-            ease: 'power4.inOut',
-            onComplete: () => {
-              document.body.style.overflow = '';
-              document.documentElement.style.overflow = '';
-              onComplete();
-            },
-          });
+          if (!skipped) {
+            handleSkip();
+          }
         },
       });
 
-      // Quick numbers countdown flashing
+      // Quick numbers countdown flashing (duration shortened to 0.4s)
       tl.to(counterObj, {
         value: 0,
-        duration: 1.8,
-        ease: 'power2.out',
+        duration: 0.4,
+        ease: 'power1.out',
         onUpdate: () => {
           const currentVal = Math.ceil(counterObj.value);
-          // Only update state to create visual flashing
           setCount(currentVal);
         },
       });
@@ -54,58 +79,60 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       // Scale up count during countdown
       tl.fromTo(
         numberRef.current,
-        { scale: 0.8, opacity: 0.3 },
-        { scale: 1, opacity: 1, duration: 1.5, ease: 'power2.out' },
+        { scale: 0.95, opacity: 0.5 },
+        { scale: 1, opacity: 1, duration: 0.3, ease: 'power1.out' },
         0
       );
 
-      // Fade in labels sequentially
+      // Fade out countdown numbers
       tl.to(numberRef.current, {
         opacity: 0,
-        y: -30,
-        duration: 0.4,
+        y: -15,
+        duration: 0.15,
         ease: 'power2.in',
-      }, '+=0.1');
+      }, '+=0.05');
 
       // Show final +30 years / +30 سنة
       tl.set(numberRef.current, {
         innerHTML: language === 'ar' ? '+٣٠ سنة' : '+30 YEARS',
-        y: 30,
+        y: 15,
       });
 
       tl.to(numberRef.current, {
         opacity: 1,
         y: 0,
-        duration: 0.5,
+        duration: 0.25,
         ease: 'power2.out',
       });
 
       // Show 'خبرة' / 'MASTERY'
       tl.fromTo(
         labelRef.current,
-        { opacity: 0, y: 20 },
+        { opacity: 0, y: 10 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.5,
+          duration: 0.25,
           ease: 'power2.out',
           innerHTML: language === 'ar' ? 'خبرة.' : 'MASTERY.',
         },
-        '-=0.2'
+        '-=0.1'
       );
 
+      // Brief pause before fading text layers
       tl.to([numberRef.current, labelRef.current], {
         opacity: 0,
-        y: -20,
-        duration: 0.4,
+        y: -10,
+        duration: 0.2,
         ease: 'power2.in',
-        delay: 0.8,
+        delay: 0.3,
       });
 
     }, containerRef);
 
     return () => {
       ctx.revert();
+      cleanupListeners();
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
     };
