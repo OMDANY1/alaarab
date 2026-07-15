@@ -85,29 +85,70 @@ export default function BrandIdea() {
       }, '-=0.4');
     });
 
-    // Mobile and tablet natural layout flow fallback (Under 1024px)
+    // Mobile and tablet scroll-pinned timeline (Under 1024px)
     mm.add("(max-width: 1023px)", () => {
-      const items = gsap.utils.toArray('.buildup-item');
+      // ── Build-Up & Climax Timeline ──
+      const tlBuild = gsap.timeline({
+        scrollTrigger: {
+          trigger: textRevealRef.current,
+          start: 'top top',
+          end: '+=130%',
+          scrub: 0.8,
+          pin: true,
+        },
+      });
+
+      const items = gsap.utils.toArray('.buildup-item') as any[];
       const climax = document.querySelector('.climax-headline-motion');
       const climaxSub = document.querySelector('.climax-sub-motion');
+      const boardLines = gsap.utils.toArray('.ev-guide-line');
 
-      gsap.set(items, {
-        clearProps: "all",
-      });
-      gsap.set(items, {
-        opacity: 0.9,
-        y: 0,
+      gsap.set(items, { opacity: 0, y: 15 });
+      gsap.set(climax, { opacity: 0, scale: 0.97 });
+      gsap.set(climaxSub, { opacity: 0, y: 10 });
+      gsap.set(boardLines, { scaleX: 0, scaleY: 0 });
+
+      // Draw background guide lines
+      tlBuild.to(boardLines, {
+        scaleX: 1,
+        scaleY: 1,
+        stagger: 0.08,
+        duration: 0.5,
+        ease: 'none',
+      }, 0.2);
+
+      // Staggered reveal and collapse of annotations
+      items.forEach((item: any, i) => {
+        tlBuild.to(item, {
+          opacity: 0.9,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+        })
+        .to(item, {
+          opacity: 0.05,
+          y: -10,
+          duration: 0.6,
+          delay: 0.3,
+        });
       });
 
-      gsap.set(climax, {
+      // Final Climax Reveal
+      tlBuild.to(climax, {
         opacity: 1,
         scale: 1,
-      });
-
-      gsap.set(climaxSub, {
+        duration: 1.0,
+        ease: 'power4.out',
+      })
+      .to(climaxSub, {
         opacity: 0.85,
         y: 0,
-      });
+        duration: 0.6,
+        ease: 'power2.out',
+      }, '-=0.3');
+
+      // Silence pause at end
+      tlBuild.to({}, { duration: 0.4 });
     });
 
     // ── Strategy Board Sheets Fade In ──
@@ -151,12 +192,12 @@ export default function BrandIdea() {
         <div className="absolute right-[15%] top-0 bottom-0 w-[1px] bg-white/[0.02] origin-top ev-guide-line scale-y-0" />
         <div className="absolute left-0 right-0 top-[35%] h-[1px] bg-white/[0.02] origin-left ev-guide-line scale-x-0" />
         
-        <div className="flex-1 w-full max-w-7xl mx-auto flex flex-col justify-center items-center relative min-h-[50vh] max-lg:flex-col-reverse max-lg:gap-12 max-lg:py-8 max-lg:min-h-0">
+        <div className="flex-1 w-full max-w-7xl mx-auto flex flex-col justify-center items-center relative min-h-[50vh]">
           
           {/* Asymmetric Scattered Strategic Annotations */}
-          <div className="absolute inset-0 w-full h-full pointer-events-none select-none max-lg:relative max-lg:pointer-events-auto max-lg:select-text max-lg:h-auto max-lg:w-full max-lg:flex max-lg:flex-col max-lg:gap-8 max-lg:px-6">
+          <div className="absolute inset-0 w-full h-full pointer-events-none select-none">
             {/* Annotation 1: Top-Right */}
-            <div className="buildup-item absolute top-[10%] right-[10%] max-w-xs text-start flex flex-col gap-2 max-lg:relative max-lg:top-auto max-lg:right-auto max-lg:max-w-none max-lg:border-s max-lg:border-[#E64648]/20 max-lg:ps-4">
+            <div className="buildup-item absolute top-[10%] right-[10%] max-md:top-[12%] max-md:right-[5%] max-md:left-[5%] max-w-xs md:max-w-xs text-start flex flex-col gap-2">
               <span className="font-mono text-[9px] text-[#E64648] tracking-widest uppercase">01 // THE DIAGNOSIS</span>
               <span className="font-cairo text-body-sm opacity-60">
                 {language === 'ar' ? 'سوق مزدحم بالادعاءات دون مرجعية واضحة.' : 'A market filled with generic claims and zero authority.'}
@@ -164,7 +205,7 @@ export default function BrandIdea() {
             </div>
 
             {/* Annotation 2: Center-Left */}
-            <div className="buildup-item absolute top-[40%] left-[8%] max-w-xs text-start flex flex-col gap-2 max-lg:relative max-lg:top-auto max-lg:left-auto max-lg:max-w-none max-lg:border-s max-lg:border-[#E64648]/20 max-lg:ps-4">
+            <div className="buildup-item absolute top-[40%] left-[8%] max-md:top-[40%] max-md:left-[5%] max-md:right-[5%] max-w-xs md:max-w-xs text-start flex flex-col gap-2">
               <span className="font-mono text-[9px] text-[#E64648] tracking-widest uppercase">02 // THE DEVIATION</span>
               <span className="font-cairo text-body-sm opacity-60">
                 {language === 'ar' ? 'تجنب القوالب المكررة والنوستالجيا المستهلكة.' : 'Bypassing film parodies and nostalgia clichés.'}
@@ -172,7 +213,7 @@ export default function BrandIdea() {
             </div>
 
             {/* Annotation 3: Bottom-Right */}
-            <div className="buildup-item absolute bottom-[15%] right-[12%] max-w-xs text-start flex flex-col gap-2 max-lg:relative max-lg:top-auto max-lg:right-auto max-lg:max-w-none max-lg:border-s max-lg:border-[#E64648]/20 max-lg:ps-4">
+            <div className="buildup-item absolute bottom-[15%] right-[12%] max-md:bottom-[15%] max-md:right-[5%] max-md:left-[5%] max-w-xs md:max-w-xs text-start flex flex-col gap-2">
               <span className="font-mono text-[9px] text-[#E64648] tracking-widest uppercase">03 // THE FORMULA</span>
               <span className="font-cairo text-body-sm opacity-60">
                 {language === 'ar' ? 'تكامل ثلاثون عامًا من المعرفة الفائقة.' : 'Leveraging three decades of process mastery.'}
@@ -181,7 +222,7 @@ export default function BrandIdea() {
           </div>
 
           {/* Climax reveal (Dominant Typographic Centerpiece) */}
-          <div className="flex flex-col items-center gap-6 z-10 relative max-lg:text-center max-lg:mb-6">
+          <div className="flex flex-col items-center gap-6 z-10 relative text-center">
             <div className="climax-headline-motion">
               <h2 className="climax-headline font-cairo text-[#E64648] text-display-xl lg:text-[10vw] font-black leading-none tracking-tighter select-none py-2">
                 للصنعة عرّاب
