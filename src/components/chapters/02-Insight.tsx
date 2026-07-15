@@ -137,12 +137,41 @@ export default function Insight() {
         });
       });
 
-      // Part D fallback remains static in this sprint
-      const lines = gsap.utils.toArray('.stmt-line-wrapper');
-      gsap.set(lines, {
-        opacity: 1,
-        y: 0,
+      // ── Connection Scroll Statements (Mobile Pinned Reveals) ──
+      const lines = gsap.utils.toArray('.stmt-line-wrapper') as any[];
+      const tlStatements = gsap.timeline({
+        scrollTrigger: {
+          trigger: statementRef.current,
+          start: 'top top',
+          end: '+=130%',
+          scrub: 0.8,
+          pin: true,
+        },
       });
+
+      gsap.set(lines, { opacity: 0, y: 15 });
+
+      // 1. Silence at start
+      tlStatements.to({}, { duration: 0.3 });
+
+      // 2. Sequential reveals loop
+      lines.forEach((line: any, index) => {
+        tlStatements.to(line, {
+          opacity: 1,
+          y: 0,
+          duration: 1.0,
+          ease: 'power3.out',
+        })
+        .to(line, {
+          opacity: index === lines.length - 1 ? 1 : 0.1,
+          y: index === lines.length - 1 ? 0 : -8,
+          duration: 0.6,
+          delay: 0.3,
+        });
+      });
+
+      // 3. Transition release pause at end
+      tlStatements.to({}, { duration: 0.4 });
     });
 
     // ── Interactive Equation Animate In (Blueprint Mode) ──
