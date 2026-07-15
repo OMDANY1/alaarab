@@ -20,28 +20,57 @@ export default function Strategy() {
   const personalityRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // ── Matrix Animation ──
-    const tlMatrix = gsap.timeline({
-      scrollTrigger: {
-        trigger: matrixRef.current,
-        start: 'top 70%',
-        toggleActions: 'play none none reverse',
-      },
+    let mm = gsap.matchMedia();
+
+    // ── Desktop Matrix Animation (1024px and above) ──
+    mm.add("(min-width: 1024px)", () => {
+      const tlMatrix = gsap.timeline({
+        scrollTrigger: {
+          trigger: matrixRef.current,
+          start: 'top 70%',
+          toggleActions: 'play none none reverse',
+        },
+      });
+
+      tlMatrix.fromTo('.competitor-dot',
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 0.3, stagger: 0.1, duration: 0.6, ease: 'back.out(1.5)' }
+      )
+      .fromTo('.arrab-dot',
+        { scale: 0, opacity: 0, x: 0, y: 0 },
+        { scale: 1.2, opacity: 1, x: 120, y: -100, duration: 1.2, ease: 'power4.out' }
+      )
+      .fromTo('.arrab-label-motion',
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.4 },
+        '-=0.4'
+      );
     });
 
-    tlMatrix.fromTo('.competitor-dot',
-      { scale: 0, opacity: 0 },
-      { scale: 1, opacity: 0.3, stagger: 0.1, duration: 0.6, ease: 'back.out(1.5)' }
-    )
-    .fromTo('.arrab-dot',
-      { scale: 0, opacity: 0, x: 0, y: 0 },
-      { scale: 1.2, opacity: 1, x: 120, y: -100, duration: 1.2, ease: 'power4.out' }
-    )
-    .fromTo('.arrab-label-motion',
-      { opacity: 0, y: 10 },
-      { opacity: 1, y: 0, duration: 0.4 },
-      '-=0.4'
-    );
+    // ── Mobile Matrix Animation (Under 1024px) ──
+    mm.add("(max-width: 1023px)", () => {
+      const tlMatrix = gsap.timeline({
+        scrollTrigger: {
+          trigger: matrixRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+        },
+      });
+
+      tlMatrix.fromTo('.competitor-dot',
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 0.3, stagger: 0.06, duration: 0.45, ease: 'back.out(1.5)' }
+      )
+      .fromTo('.arrab-dot',
+        { scale: 0, opacity: 0, x: 0, y: 0 },
+        { scale: 1.2, opacity: 1, x: 120, y: -100, duration: 0.9, ease: 'power4.out' }
+      )
+      .fromTo('.arrab-label-motion',
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.3 },
+        '-=0.3'
+      );
+    });
 
     // ── Personality Striking Anim ──
     const traits = gsap.utils.toArray('.personality-trait');
