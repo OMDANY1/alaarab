@@ -29,7 +29,7 @@ export default function Insight() {
     // Desktop only scroll-pin timelines (1024px and above)
     mm.add("(min-width: 1024px)", () => {
       // ── Evolution Sequence (Pinned Stack & Line Reveals) ──
-      const steps = gsap.utils.toArray('.evolution-step');
+      const steps = gsap.utils.toArray('.evolution-step-motion');
       const tlEvolution = gsap.timeline({
         scrollTrigger: {
           trigger: evolutionRef.current,
@@ -99,7 +99,7 @@ export default function Insight() {
 
     // Mobile/Tablet natural vertical scroll layout fallback (Under 1024px)
     mm.add("(max-width: 1023px)", () => {
-      const steps = gsap.utils.toArray('.evolution-step');
+      const steps = gsap.utils.toArray('.evolution-step-motion');
       const lines = gsap.utils.toArray('.stmt-line-wrapper');
 
       gsap.set(steps, {
@@ -218,12 +218,14 @@ export default function Insight() {
             {(language === 'ar' ? stepsAr : stepsEn).map((step, i) => (
               <div
                 key={i}
-                className="evolution-step absolute lg:absolute font-cairo text-display-md lg:text-display-lg font-black tracking-tighter text-center max-lg:relative max-lg:text-heading-lg"
+                className="evolution-step-motion absolute lg:absolute max-lg:relative"
               >
-                {step}
-                {i < stepsAr.length - 1 && (
-                  <div className="text-[12px] opacity-30 mt-2 text-center lg:hidden">↓</div>
-                )}
+                <div className="evolution-step font-cairo text-display-md lg:text-display-lg font-black tracking-tighter text-center max-lg:text-heading-lg">
+                  {step}
+                  {i < stepsAr.length - 1 && (
+                    <div className="text-[12px] opacity-30 mt-2 text-center lg:hidden">↓</div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
