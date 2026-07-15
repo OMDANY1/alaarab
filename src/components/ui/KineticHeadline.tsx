@@ -102,20 +102,24 @@ export default function KineticHeadline({
   const sizeClass = hasCustomSize ? '' : 'text-[8vw] md:text-[10vw] lg:text-[12vw] xl:text-[15vw]';
 
   return (
-    <div ref={containerRef} className="relative overflow-hidden py-1">
-      <Tag
-        className={`
-          kinetic-target
-          ${fontClass}
-          ${leadingClass}
-          ${sizeClass}
-          ${isArabic ? 'tracking-normal' : 'tracking-tighter'}
-          ${className}
-        `}
+    <div ref={containerRef} className="relative overflow-hidden py-3 px-1">
+      {/* Animating parent wrapper to protect Arabic cursive shaping on Safari */}
+      <div 
+        className="kinetic-target"
         style={{ perspective: '1000px', transformOrigin: 'center bottom' }}
       >
-        {text}
-      </Tag>
+        <Tag
+          className={`
+            ${fontClass}
+            ${leadingClass}
+            ${sizeClass}
+            ${isArabic ? 'tracking-normal' : 'tracking-tighter'}
+            ${className}
+          `}
+        >
+          {text}
+        </Tag>
+      </div>
     </div>
   );
 }

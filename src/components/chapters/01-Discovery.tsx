@@ -113,7 +113,7 @@ export default function Discovery() {
         },
       });
 
-      const lines = gsap.utils.toArray('.problem-line');
+      const lines = gsap.utils.toArray('.problem-line-wrapper');
       gsap.set(lines, { opacity: 0, y: 40 });
 
       // Animate background color change from Cream to Deep Burgundy
@@ -143,7 +143,7 @@ export default function Discovery() {
     // Mobile and tablet natural layout flow fallback (Under 1024px)
     mm.add("(max-width: 1023px)", () => {
       const words = gsap.utils.toArray('.noise-word');
-      const lines = gsap.utils.toArray('.problem-line');
+      const lines = gsap.utils.toArray('.problem-line-wrapper');
 
       // Clear any inline inline styles/transforms to allow natural relative wraps
       gsap.set(words, {
@@ -254,12 +254,16 @@ export default function Discovery() {
           label={language === 'ar' ? 'الرؤية الاستراتيجية' : 'THE STRATEGIC INSIGHT'}
           number="01 / 08"
         />
-        <div className="flex-1 flex flex-col justify-center items-center text-center max-w-5xl mx-auto w-full gap-16 relative min-h-[50vh]">
-          <div className="problem-line font-cairo text-heading-lg md:text-display-md font-bold leading-tight py-2">
-            {language === 'ar' ? 'المشكلة لم تكن في المنتج.' : 'THE PROBLEM WAS NEVER THE PRODUCT.'}
+        <div className="flex-1 flex flex-col justify-center items-center text-center max-w-5xl mx-auto w-full gap-16 relative min-h-[50vh] max-md:gap-8">
+          <div className="problem-line-wrapper py-3">
+            <div className="problem-line font-cairo text-heading-lg md:text-display-md font-bold leading-tight">
+              {language === 'ar' ? 'المشكلة لم تكن في المنتج.' : 'THE PROBLEM WAS NEVER THE PRODUCT.'}
+            </div>
           </div>
-          <div className="problem-line font-cairo text-heading-lg md:text-display-md font-black text-[#E64648] leading-tight py-2">
-            {language === 'ar' ? 'المشكلة كانت في القصة التي لم تُروَ بعد.' : 'THE PROBLEM WAS THE STORY UNTOLD.'}
+          <div className="problem-line-wrapper py-3">
+            <div className="problem-line font-cairo text-heading-lg md:text-display-md font-black text-[#E64648] leading-tight">
+              {language === 'ar' ? 'المشكلة كانت في القصة التي لم تُروَ بعد.' : 'THE PROBLEM WAS THE STORY UNTOLD.'}
+            </div>
           </div>
         </div>
       </section>

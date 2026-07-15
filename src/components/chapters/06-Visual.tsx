@@ -220,7 +220,7 @@ export default function Visual() {
 
           <div className="logo-grid grid grid-cols-1 md:grid-cols-2 gap-12 w-full mt-6">
             {/* Box 1: Text Mark */}
-            <div className="bg-[#F1EEE8] p-8 border border-black/5 rounded-sm relative flex flex-col justify-between min-h-[350px]">
+            <div className="bg-[#F1EEE8] p-6 md:p-8 border border-black/5 rounded-sm relative flex flex-col justify-between min-h-[350px]">
               <span className="font-mono text-[9px] opacity-40 uppercase">WORDMARK / الشعار اللفظي</span>
               <div className="my-auto py-8 flex flex-col gap-4 items-center justify-center text-center">
                 <div className="font-arabic-display text-heading-lg md:text-display-md text-[#2D070B] leading-normal font-black">
@@ -238,7 +238,7 @@ export default function Visual() {
             </div>
 
             {/* Box 2: Icon geometry */}
-            <div className="bg-[#F1EEE8] p-8 border border-black/5 rounded-sm relative flex flex-col justify-between min-h-[350px]">
+            <div className="bg-[#F1EEE8] p-6 md:p-8 border border-black/5 rounded-sm relative flex flex-col justify-between min-h-[350px]">
               <span className="font-mono text-[9px] opacity-40 uppercase">GEOMETRY SYSTEM / هندسة الشعار</span>
               <div className="my-auto py-8 flex items-center justify-center">
                 <svg width="150" height="150" viewBox="0 0 100 100" className="text-[#2D070B]">
@@ -276,7 +276,7 @@ export default function Visual() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6 w-full">
             {/* CSS mock art direction frame 1 */}
-            <div className="aspect-square bg-[#2D070B] border border-white/10 p-8 flex flex-col justify-between relative overflow-hidden group">
+            <div className="aspect-square bg-[#2D070B] border border-white/10 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden group">
               <img
                 src="/images/meat_texture.png"
                 alt="Meat texture"
@@ -293,7 +293,7 @@ export default function Visual() {
             </div>
 
             {/* CSS mock art direction frame 2 */}
-            <div className="aspect-square bg-[#2D070B] border border-white/10 p-8 flex flex-col justify-between relative overflow-hidden group">
+            <div className="aspect-square bg-[#2D070B] border border-white/10 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden group">
               <img
                 src="/images/knife_movement.png"
                 alt="Knife movement"
@@ -310,7 +310,7 @@ export default function Visual() {
             </div>
 
             {/* CSS mock art direction frame 3 */}
-            <div className="aspect-square bg-[#2D070B] border border-white/10 p-8 flex flex-col justify-between relative overflow-hidden group">
+            <div className="aspect-square bg-[#2D070B] border border-white/10 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden group">
               <img
                 src="/images/chef_hands.png"
                 alt="Chef hands"

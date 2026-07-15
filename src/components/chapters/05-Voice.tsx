@@ -19,23 +19,42 @@ export default function Voice() {
   const transformRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // Before/After line-through scroll anim
-    const items = gsap.utils.toArray('.copy-transform-item');
-    items.forEach((item: any) => {
-      const beforeText = item.querySelector('.before-text');
-      const arrow = item.querySelector('.transform-arrow');
-      const afterText = item.querySelector('.after-text');
+    const mm = gsap.matchMedia();
 
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: item,
-          start: 'top 80%',
-          toggleActions: 'play none none reverse',
-        },
-      })
-      .fromTo(beforeText, { opacity: 0.8 }, { opacity: 0.25, duration: 0.5 })
-      .fromTo(arrow, { opacity: 0, scale: 0.5 }, { opacity: 0.5, scale: 1, duration: 0.4 }, '-=0.2')
-      .fromTo(afterText, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.1');
+    // Desktop/Tablet horizontal animations (1024px and above)
+    mm.add("(min-width: 1024px)", () => {
+      // Before/After line-through scroll anim
+      const items = gsap.utils.toArray('.copy-transform-item');
+      items.forEach((item: any) => {
+        const beforeText = item.querySelector('.before-text');
+        const arrow = item.querySelector('.transform-arrow');
+        const afterText = item.querySelector('.after-text-wrapper');
+
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
+          },
+        })
+        .fromTo(beforeText, { opacity: 0.8 }, { opacity: 0.25, duration: 0.5 })
+        .fromTo(arrow, { opacity: 0, scale: 0.5 }, { opacity: 0.5, scale: 1, duration: 0.4 }, '-=0.2')
+        .fromTo(afterText, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.1');
+      });
+    });
+
+    // Mobile natural layout flow fallback (Under 1024px)
+    mm.add("(max-width: 1023px)", () => {
+      const items = gsap.utils.toArray('.copy-transform-item');
+      items.forEach((item: any) => {
+        const beforeText = item.querySelector('.before-text');
+        const arrow = item.querySelector('.transform-arrow');
+        const afterText = item.querySelector('.after-text-wrapper');
+
+        gsap.set(beforeText, { opacity: 0.25 });
+        gsap.set(arrow, { opacity: 0.5, scale: 1 });
+        gsap.set(afterText, { opacity: 1, y: 0 });
+      });
     });
 
   }, { scope: sectionRef });
@@ -78,16 +97,16 @@ export default function Voice() {
               {language === 'ar' ? 'واثق. CONFIDENT' : 'CONFIDENT.'}
             </div>
             <div className="border border-[#2D070B]/10 py-6 px-4 rounded-sm">
-              {language === 'ar' ? 'عارف. KNOWLEDGEABLE' : 'KNOWLEDGEABLE.'}
+              {language === 'ar' ? 'أصيل. AUTHENTIC' : 'AUTHENTIC.'}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Part C: Before/After Copy Transformation */}
+      {/* Part C: Copywriting Shift */}
       <section ref={transformRef} className="min-h-screen flex flex-col justify-start py-20 md:py-32 section-padding relative">
         <SectionHeader
-          label={language === 'ar' ? 'تحول النبرة' : 'COPY TRANSFORMATION'}
+          label={language === 'ar' ? 'الهوية اللفظية' : 'VERBAL IDENTITY'}
           number="05 / 08"
         />
         
@@ -111,7 +130,7 @@ export default function Voice() {
                 </p>
               </div>
               <div className="md:col-span-1 flex justify-center text-xl text-[#E64648] transform-arrow select-none">→</div>
-              <div className="md:col-span-5 flex flex-col gap-2 bg-[#E5E0D8]/20 p-6 rounded-sm">
+              <div className="after-text-wrapper md:col-span-5 flex flex-col gap-2 bg-[#E5E0D8]/20 p-6 md:p-8 rounded-sm">
                 <span className="font-mono text-[9px] opacity-40 uppercase text-[#E64648] font-bold">{language === 'ar' ? 'بعد / صياغة العراب السيادية' : 'AFTER / AL-ARRAB SOVEREIGN'}</span>
                 <p className="after-text font-display text-heading-sm font-bold text-[#2D070B] leading-normal">
                   {language === 'ar' ? 'صنعة ٣٠ سنة. ما تحتاج شرح.' : '30 years of craft. Needs no description.'}
@@ -128,7 +147,7 @@ export default function Voice() {
                 </p>
               </div>
               <div className="md:col-span-1 flex justify-center text-xl text-[#E64648] transform-arrow select-none">→</div>
-              <div className="md:col-span-5 flex flex-col gap-2 bg-[#E5E0D8]/20 p-6 rounded-sm">
+              <div className="after-text-wrapper md:col-span-5 flex flex-col gap-2 bg-[#E5E0D8]/20 p-6 md:p-8 rounded-sm">
                 <span className="font-mono text-[9px] opacity-40 uppercase text-[#E64648] font-bold">{language === 'ar' ? 'بعد / صياغة العراب السيادية' : 'AFTER / AL-ARRAB SOVEREIGN'}</span>
                 <p className="after-text font-display text-heading-sm font-bold text-[#2D070B] leading-normal">
                   {language === 'ar' ? 'سر الصنعة يوضع بهدوء.' : 'Process secrets are served quietly.'}
@@ -208,28 +227,28 @@ export default function Voice() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-[#E5E0D8]/40 p-8 rounded-sm">
+            <div className="bg-[#E5E0D8]/40 p-6 md:p-8 rounded-sm">
               <span className="font-mono text-[10px] opacity-40 uppercase">WRAP / غلاف الشاورما</span>
               <p className="font-display text-heading-sm font-bold text-[#E64648] mt-4 leading-normal">
                 {language === 'ar' ? 'سنين. ملفوفة صح.' : 'Years. Wrapped right.'}
               </p>
             </div>
 
-            <div className="bg-[#E5E0D8]/40 p-8 rounded-sm">
+            <div className="bg-[#E5E0D8]/40 p-6 md:p-8 rounded-sm">
               <span className="font-mono text-[10px] opacity-40 uppercase">SAUCE CUP / علبة الصوص</span>
               <p className="font-display text-heading-sm font-bold text-[#2D070B] mt-4 leading-normal">
                 {language === 'ar' ? 'من أسرار الصنعة.' : 'From the secrets.'}
               </p>
             </div>
 
-            <div className="bg-[#E5E0D8]/40 p-8 rounded-sm">
+            <div className="bg-[#E5E0D8]/40 p-6 md:p-8 rounded-sm">
               <span className="font-mono text-[10px] opacity-40 uppercase">BAG / كيس التوصيل</span>
               <p className="font-display text-heading-sm font-bold text-[#2D070B] mt-4 leading-normal">
                 {language === 'ar' ? 'الخبرة وصلت.' : 'Experience arrived.'}
               </p>
             </div>
 
-            <div className="bg-[#E5E0D8]/40 p-8 rounded-sm">
+            <div className="bg-[#E5E0D8]/40 p-6 md:p-8 rounded-sm">
               <span className="font-mono text-[10px] opacity-40 uppercase">TRAY / ورق الصينية</span>
               <p className="font-display text-heading-sm font-bold text-[#E64648] mt-4 leading-normal">
                 {language === 'ar' ? 'خذ وقتك. إحنا أخذنا ٣٠ سنة.' : 'Take your time. We took 30 years.'}

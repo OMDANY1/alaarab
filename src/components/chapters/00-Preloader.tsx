@@ -16,10 +16,6 @@ export default function Preloader({ onComplete }: PreloaderProps) {
   const [count, setCount] = useState(30);
 
   useEffect(() => {
-    // Prevent scrolling while loading by default
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-
     let skipped = false;
 
     const handleSkip = () => {
@@ -36,8 +32,6 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         duration: 0.4,
         ease: 'power3.out',
         onComplete: () => {
-          document.body.style.overflow = '';
-          document.documentElement.style.overflow = '';
           onComplete();
         },
       });
@@ -133,8 +127,6 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     return () => {
       ctx.revert();
       cleanupListeners();
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
     };
   }, [language, onComplete]);
 

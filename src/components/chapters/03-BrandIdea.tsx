@@ -216,8 +216,8 @@ export default function BrandIdea() {
           {/* Overlapping Presentation Board Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start w-full relative z-10 px-4">
             
-            {/* Card 01: The Master */}
-            <div className="strategy-sheet flex flex-col items-start border border-[#2D070B]/10 bg-white/40 p-8 rounded-sm min-h-[380px] relative shadow-sm">
+             {/* Card 01: The Master */}
+            <div className="strategy-sheet flex flex-col items-start border border-[#2D070B]/10 bg-white/40 p-6 md:p-8 rounded-sm min-h-[380px] relative shadow-sm">
               <div className="absolute top-4 right-4 font-mono text-[9px] opacity-40">BOARD 01</div>
               <span className="text-[11px] font-mono text-[#E64648] tracking-widest mb-6">PILLAR // 01</span>
               <h4 className="font-cairo text-heading-md font-bold text-[#2D070B] mb-4">
@@ -231,7 +231,7 @@ export default function BrandIdea() {
             </div>
 
             {/* Card 02: The Process (Solid Dark Sheet + Image Crop) */}
-            <div className="strategy-sheet flex flex-col items-start bg-[#2D070B] text-[#F1EEE8] p-8 rounded-sm min-h-[380px] relative shadow-xl md:-translate-y-4 border border-white/5">
+            <div className="strategy-sheet flex flex-col items-start bg-[#2D070B] text-[#F1EEE8] p-6 md:p-8 rounded-sm min-h-[380px] relative shadow-xl md:-translate-y-4 border border-white/5">
               <div className="absolute top-4 right-4 font-mono text-[9px] opacity-35">BOARD 02</div>
               <span className="text-[11px] font-mono text-[#E64648] tracking-widest mb-6">PILLAR // 02</span>
               <h4 className="font-cairo text-heading-md font-bold mb-4">
@@ -252,7 +252,7 @@ export default function BrandIdea() {
             </div>
 
             {/* Card 03: The Status (Outline Swatch + Image Crop) */}
-            <div className="strategy-sheet flex flex-col items-start border border-[#2D070B]/10 bg-white/40 p-8 rounded-sm min-h-[380px] relative shadow-sm">
+            <div className="strategy-sheet flex flex-col items-start border border-[#2D070B]/10 bg-white/40 p-6 md:p-8 rounded-sm min-h-[380px] relative shadow-sm">
               <div className="absolute top-4 right-4 font-mono text-[9px] opacity-40">BOARD 03</div>
               <span className="text-[11px] font-mono text-[#E64648] tracking-widest mb-6">PILLAR // 03</span>
               <h4 className="font-cairo text-heading-md font-bold text-[#2D070B] mb-4">

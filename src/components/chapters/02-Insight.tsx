@@ -78,7 +78,7 @@ export default function Insight() {
         },
       });
 
-      const lines = gsap.utils.toArray('.stmt-line');
+      const lines = gsap.utils.toArray('.stmt-line-wrapper');
       gsap.set(lines, { opacity: 0, y: 30 });
 
       lines.forEach((line: any, index) => {
@@ -100,7 +100,7 @@ export default function Insight() {
     // Mobile/Tablet natural vertical scroll layout fallback (Under 1024px)
     mm.add("(max-width: 1023px)", () => {
       const steps = gsap.utils.toArray('.evolution-step');
-      const lines = gsap.utils.toArray('.stmt-line');
+      const lines = gsap.utils.toArray('.stmt-line-wrapper');
 
       gsap.set(steps, {
         clearProps: "all",
@@ -240,22 +240,30 @@ export default function Insight() {
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full max-w-7xl mx-auto z-10 relative">
           {/* Left Column: Giant Quote Statement (Occupies 7/12) */}
           <div className="lg:col-span-7 flex flex-col justify-center items-start gap-4 text-start">
-            <h4 className="stmt-line font-cairo text-heading-lg lg:text-display-md font-black leading-[1.1] tracking-tighter text-[#E64648]">
-              {language === 'ar' ? 'العراب ليس شخصية. العراب مكانة.' : 'AL-ARRAB IS NOT A CHARACTER. IT IS A STATUS.'}
-            </h4>
+            <div className="stmt-line-wrapper py-2">
+              <h4 className="stmt-line font-cairo text-heading-lg lg:text-display-md font-black leading-[1.1] text-[#E64648]">
+                {language === 'ar' ? 'العراب ليس شخصية. العراب مكانة.' : 'AL-ARRAB IS NOT A CHARACTER. IT IS A STATUS.'}
+              </h4>
+            </div>
           </div>
 
           {/* Right Column: Supporting Annotations (Occupies 5/12) */}
           <div className="lg:col-span-5 flex flex-col justify-center items-start gap-6 text-start lg:border-s lg:border-[#F1EEE8]/20 lg:ps-8">
-            <p className="stmt-line font-cairo text-heading-sm opacity-90 leading-relaxed">
-              {language === 'ar' ? 'مكانة لا تصنعها حملة إعلانية.' : 'A status no ad campaign can manufacture.'}
-            </p>
-            <div className="h-[1px] w-16 bg-[#E64648]/40 stmt-line" />
-            <p className="stmt-line font-cairo text-body-lg opacity-75 leading-relaxed">
-              {language === 'ar'
-                ? 'مكانة تصنعها السنين المتراكمة وخبرة الصنعة التي تدرك التفاصيل.'
-                : 'A status forged by decades of kitchen mastery and process mastery.'}
-            </p>
+            <div className="stmt-line-wrapper py-1">
+              <p className="stmt-line font-cairo text-heading-sm opacity-90 leading-relaxed">
+                {language === 'ar' ? 'مكانة لا تصنعها حملة إعلانية.' : 'A status no ad campaign can manufacture.'}
+              </p>
+            </div>
+            <div className="stmt-line-wrapper py-1">
+              <div className="h-[1px] w-16 bg-[#E64648]/40 stmt-line" />
+            </div>
+            <div className="stmt-line-wrapper py-1">
+              <p className="stmt-line font-cairo text-body-lg opacity-75 leading-relaxed">
+                {language === 'ar'
+                  ? 'مكانة تصنعها السنين المتراكمة وخبرة الصنعة التي تدرك التفاصيل.'
+                  : 'A status forged by decades of kitchen mastery and process mastery.'}
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -284,7 +292,7 @@ export default function Insight() {
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8 font-cairo font-black text-[5vw] lg:text-[2.2vw] leading-none uppercase w-full px-6">
             
             {/* Swatch 01 */}
-            <div className="eq-card flex flex-col items-start border border-[#2D070B]/10 bg-white/40 p-8 rounded-sm w-full lg:w-[22%] relative">
+            <div className="eq-card flex flex-col items-start border border-[#2D070B]/10 bg-white/40 p-6 md:p-8 rounded-sm w-full lg:w-[22%] relative">
               <span className="absolute top-3 right-3 font-mono text-[10px] opacity-45">01 // AGE</span>
               <span className="text-[11px] font-mono text-[#E64648] tracking-widest mb-4">THE ORIGIN</span>
               <span className="text-[#2D070B]">{language === 'ar' ? 'السنين' : 'YEARS'}</span>
@@ -293,7 +301,7 @@ export default function Insight() {
             <div className="eq-op text-[#E64648] text-[8vw] lg:text-[3vw] font-light select-none opacity-45">+</div>
             
             {/* Swatch 02 */}
-            <div className="eq-card flex flex-col items-start border border-[#2D070B]/10 bg-white/40 p-8 rounded-sm w-full lg:w-[22%] relative">
+            <div className="eq-card flex flex-col items-start border border-[#2D070B]/10 bg-white/40 p-6 md:p-8 rounded-sm w-full lg:w-[22%] relative">
               <span className="absolute top-3 right-3 font-mono text-[10px] opacity-45">02 // MASTER</span>
               <span className="text-[11px] font-mono text-[#E64648] tracking-widest mb-4">THE METHOD</span>
               <span className="text-[#2D070B]">{language === 'ar' ? 'الصنعة' : 'CRAFT'}</span>
@@ -302,7 +310,7 @@ export default function Insight() {
             <div className="eq-op text-[#E64648] text-[8vw] lg:text-[3vw] font-light select-none opacity-45">+</div>
             
             {/* Swatch 03 */}
-            <div className="eq-card flex flex-col items-start border border-[#2D070B]/10 bg-white/40 p-8 rounded-sm w-full lg:w-[22%] relative">
+            <div className="eq-card flex flex-col items-start border border-[#2D070B]/10 bg-white/40 p-6 md:p-8 rounded-sm w-full lg:w-[22%] relative">
               <span className="absolute top-3 right-3 font-mono text-[10px] opacity-45">03 // VALUE</span>
               <span className="text-[11px] font-mono text-[#E64648] tracking-widest mb-4">THE PRODUCT</span>
               <span className="text-[#2D070B]">{language === 'ar' ? 'الطعم' : 'TASTE'}</span>
@@ -311,7 +319,7 @@ export default function Insight() {
             <div className="eq-op text-[#E64648] text-[8vw] lg:text-[3vw] font-light select-none opacity-45">=</div>
             
             {/* Result Blueprint */}
-            <div className="eq-card eq-result-bp flex flex-col items-start border border-[#2D070B]/20 p-8 rounded-sm w-full lg:w-[26%] shadow-lg relative transition-colors duration-500">
+            <div className="eq-card eq-result-bp flex flex-col items-start border border-[#2D070B]/20 p-6 md:p-8 rounded-sm w-full lg:w-[26%] shadow-lg relative transition-colors duration-500">
               <span className="absolute top-3 right-3 font-mono text-[10px] opacity-60">RESULT</span>
               <span className="text-[11px] font-mono text-[#E64648] tracking-widest mb-4">THE IDENTITY</span>
               <span className="font-bold">{language === 'ar' ? 'العراب' : 'AL-ARRAB'}</span>

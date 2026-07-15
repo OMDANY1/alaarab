@@ -251,7 +251,7 @@ export default function Strategy() {
             </div>
           </div>
 
-          <div className="bg-[#4A1018] p-12 rounded-sm border border-white/5 flex flex-col justify-center gap-6 min-h-[300px] relative">
+          <div className="bg-[#4A1018] p-6 md:p-12 rounded-sm border border-white/5 flex flex-col justify-center gap-6 min-h-[300px] relative">
             <span className="absolute top-4 right-4 font-mono text-[10px] opacity-30">STATEMENT</span>
             <div className="font-display text-[#F1EEE8] text-heading-lg font-bold leading-tight">
               {language === 'ar' ? 'يعرف أكثر.' : 'KNOWS MORE.'}

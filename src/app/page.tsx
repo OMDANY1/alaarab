@@ -52,11 +52,7 @@ export default function Home() {
       )}
 
       {/* Main Single-Page Presentation Scroll */}
-      <main
-        className={`w-full overflow-x-hidden transition-opacity duration-1000 bg-[#F1EEE8] ${
-          loading ? 'opacity-0 h-screen overflow-hidden' : 'opacity-100'
-        }`}
-      >
+      <main className="w-full overflow-x-hidden bg-[#F1EEE8] opacity-100">
         <Discovery />
         <Insight />
         <BrandIdea />

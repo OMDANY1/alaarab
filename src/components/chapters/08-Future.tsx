@@ -132,16 +132,16 @@ export default function Future() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 font-mono text-xs mt-6 w-full">
-            <div className="scale-item border border-[#2D070B]/10 p-8 rounded-sm bg-[#E5E0D8]/45">
+            <div className="scale-item border border-[#2D070B]/10 p-6 md:p-8 rounded-sm bg-[#E5E0D8]/45">
               {language === 'ar' ? 'الفروع والمواقع' : 'Branches'}
             </div>
-            <div className="scale-item border border-[#2D070B]/10 p-8 rounded-sm bg-[#E5E0D8]/45">
+            <div className="scale-item border border-[#2D070B]/10 p-6 md:p-8 rounded-sm bg-[#E5E0D8]/45">
               {language === 'ar' ? 'التغليف والتسليم' : 'Packaging'}
             </div>
-            <div className="scale-item border border-[#2D070B]/10 p-8 rounded-sm bg-[#E5E0D8]/45">
+            <div className="scale-item border border-[#2D070B]/10 p-6 md:p-8 rounded-sm bg-[#E5E0D8]/45">
               {language === 'ar' ? 'المنظومة الرقمية' : 'Digital products'}
             </div>
-            <div className="scale-item border border-[#2D070B]/10 p-8 rounded-sm bg-[#E5E0D8]/45">
+            <div className="scale-item border border-[#2D070B]/10 p-6 md:p-8 rounded-sm bg-[#E5E0D8]/45">
               {language === 'ar' ? 'الحملات الخارجية' : 'Campaigns'}
             </div>
           </div>

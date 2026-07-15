@@ -20,42 +20,59 @@ export default function Experience() {
   const timelineRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // ── Social Feed Scroll Anim ──
-    const feed = socialFeedRef.current;
-    if (feed) {
-      const cards = feed.querySelectorAll('.social-feed-card');
-      gsap.fromTo(cards,
-        { y: 50, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.15,
-          duration: 0.8,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: feed,
-            start: 'top 80%',
-          }
-        }
-      );
-    }
+    const mm = gsap.matchMedia();
 
-    // ── Launch Timeline Anim ──
-    const nodes = gsap.utils.toArray('.timeline-node');
-    const tlLaunch = gsap.timeline({
-      scrollTrigger: {
-        trigger: timelineRef.current,
-        start: 'top 75%',
-        toggleActions: 'play none none reverse',
-      },
+    // Desktop/Tablet horizontal animations (1024px and above)
+    mm.add("(min-width: 1024px)", () => {
+      // ── Social Feed Scroll Anim ──
+      const feed = socialFeedRef.current;
+      if (feed) {
+        const cards = feed.querySelectorAll('.social-feed-card');
+        gsap.fromTo(cards,
+          { y: 50, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.15,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: feed,
+              start: 'top 80%',
+            }
+          }
+        );
+      }
+
+      // ── Launch Timeline Anim ──
+      const nodes = gsap.utils.toArray('.timeline-node');
+      const tlLaunch = gsap.timeline({
+        scrollTrigger: {
+          trigger: timelineRef.current,
+          start: 'top 75%',
+          toggleActions: 'play none none reverse',
+        },
+      });
+
+      tlLaunch.fromTo(nodes,
+        { opacity: 0, x: language === 'ar' ? 40 : -40 },
+        { opacity: 1, x: 0, stagger: 0.2, duration: 0.8, ease: 'power3.out' }
+      );
     });
 
-    tlLaunch.fromTo(nodes,
-      { opacity: 0, x: language === 'ar' ? 40 : -40 },
-      { opacity: 1, x: 0, stagger: 0.2, duration: 0.8, ease: 'power3.out' }
-    );
+    // Mobile natural layout flow fallback (Under 1024px)
+    mm.add("(max-width: 1023px)", () => {
+      const feed = socialFeedRef.current;
+      const nodes = gsap.utils.toArray('.timeline-node');
 
-  }, { scope: sectionRef });
+      if (feed) {
+        const cards = feed.querySelectorAll('.social-feed-card');
+        gsap.set(cards, { opacity: 1, y: 0 });
+      }
+      gsap.set(nodes, { opacity: 1, x: 0 });
+    });
+
+  }, { scope: sectionRef, dependencies: [language] });
 
   return (
     <div ref={sectionRef} className="bg-[#F1EEE8] text-[#2D070B] overflow-hidden">
@@ -86,7 +103,7 @@ export default function Experience() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full mt-6">
             {/* Box 1 */}
-            <div className="wireframe-box bg-[#2D070B] text-[#F1EEE8] p-8 border border-white/10 min-h-[250px] flex flex-col justify-between rounded-sm shadow-xl">
+            <div className="wireframe-box bg-[#2D070B] text-[#F1EEE8] p-6 md:p-8 border border-white/10 min-h-[250px] flex flex-col justify-between rounded-sm shadow-xl">
               <div>
                 <span className="font-mono text-[9px] opacity-40 uppercase">ITEM 01 / WRAPPER SLEEVE</span>
                 <h5 className="font-display text-heading-md font-bold text-[#E64648] mt-3 leading-tight">
@@ -104,7 +121,7 @@ export default function Experience() {
             </div>
 
             {/* Box 2 */}
-            <div className="wireframe-box bg-[#2D070B] text-[#F1EEE8] p-8 border border-white/10 min-h-[250px] flex flex-col justify-between rounded-sm shadow-xl">
+            <div className="wireframe-box bg-[#2D070B] text-[#F1EEE8] p-6 md:p-8 border border-white/10 min-h-[250px] flex flex-col justify-between rounded-sm shadow-xl">
               <div>
                 <span className="font-mono text-[9px] opacity-40 uppercase">ITEM 02 / TAKEAWAY BOX</span>
                 <h5 className="font-display text-heading-md font-bold text-[#F1EEE8] mt-3 leading-tight">
@@ -162,7 +179,7 @@ export default function Experience() {
             </div>
 
             {/* Environmental Graphic Wall Mockup */}
-            <div className="bg-[#2D070B] text-[#F1EEE8] border border-white/5 p-10 rounded-sm min-h-[300px] flex flex-col justify-between shadow-2xl relative overflow-hidden">
+            <div className="bg-[#2D070B] text-[#F1EEE8] border border-white/5 p-6 md:p-10 rounded-sm min-h-[300px] flex flex-col justify-between shadow-2xl relative overflow-hidden">
               <span className="font-mono text-[9px] opacity-30">MAIN WALL GRAPHIC / الجدار الرئيسي</span>
               <div className="my-auto text-center py-6">
                 <h5 className="font-arabic-display text-display-md text-[#E64648] leading-[1.2] py-1 mb-2">
@@ -197,7 +214,7 @@ export default function Experience() {
 
           <div ref={socialFeedRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6 w-full">
             {/* Card 1 */}
-            <div className="social-feed-card aspect-[4/5] bg-[#2D070B] text-[#F1EEE8] p-8 flex flex-col justify-between border border-white/5 rounded-sm relative overflow-hidden group">
+            <div className="social-feed-card aspect-[4/5] bg-[#2D070B] text-[#F1EEE8] p-6 md:p-8 flex flex-col justify-between border border-white/5 rounded-sm relative overflow-hidden group">
               <img
                 src="/images/shawarma_closeup.png"
                 alt="Shawarma Closeup social post"
@@ -212,7 +229,7 @@ export default function Experience() {
             </div>
 
             {/* Card 2 */}
-            <div className="social-feed-card aspect-[4/5] bg-[#E64648] text-[#F1EEE8] p-8 flex flex-col justify-between border border-white/5 rounded-sm relative overflow-hidden group">
+            <div className="social-feed-card aspect-[4/5] bg-[#E64648] text-[#F1EEE8] p-6 md:p-8 flex flex-col justify-between border border-white/5 rounded-sm relative overflow-hidden group">
               <img
                 src="/images/packaging_mockup.png"
                 alt="Packaging Mockup social post"
@@ -227,7 +244,7 @@ export default function Experience() {
             </div>
 
             {/* Card 3 */}
-            <div className="social-feed-card aspect-[4/5] bg-[#2D070B] text-[#F1EEE8] p-8 flex flex-col justify-between border border-white/5 rounded-sm relative overflow-hidden group">
+            <div className="social-feed-card aspect-[4/5] bg-[#2D070B] text-[#F1EEE8] p-6 md:p-8 flex flex-col justify-between border border-white/5 rounded-sm relative overflow-hidden group">
               <img
                 src="/images/sauce_details.png"
                 alt="Sauce Details social post"
