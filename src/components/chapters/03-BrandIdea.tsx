@@ -36,8 +36,8 @@ export default function BrandIdea() {
       });
 
       const items = gsap.utils.toArray('.buildup-item');
-      const climax = document.querySelector('.climax-headline');
-      const climaxSub = document.querySelector('.climax-sub');
+      const climax = document.querySelector('.climax-headline-motion');
+      const climaxSub = document.querySelector('.climax-sub-motion');
       const boardLines = gsap.utils.toArray('.ev-guide-line');
 
       gsap.set(items, { opacity: 0, y: 40 });
@@ -88,8 +88,8 @@ export default function BrandIdea() {
     // Mobile and tablet natural layout flow fallback (Under 1024px)
     mm.add("(max-width: 1023px)", () => {
       const items = gsap.utils.toArray('.buildup-item');
-      const climax = document.querySelector('.climax-headline');
-      const climaxSub = document.querySelector('.climax-sub');
+      const climax = document.querySelector('.climax-headline-motion');
+      const climaxSub = document.querySelector('.climax-sub-motion');
 
       gsap.set(items, {
         clearProps: "all",
@@ -182,11 +182,15 @@ export default function BrandIdea() {
 
           {/* Climax reveal (Dominant Typographic Centerpiece) */}
           <div className="flex flex-col items-center gap-6 z-10 relative max-lg:text-center max-lg:mb-6">
-            <h2 className="climax-headline font-cairo text-[#E64648] text-display-xl lg:text-[10vw] font-black leading-none tracking-tighter select-none py-2">
-              للصنعة عرّاب
-            </h2>
-            <div className="climax-sub font-mono text-[10px] md:text-xs tracking-[0.35em] text-[#F1EEE8] opacity-70 uppercase select-none mt-2">
-              {language === 'ar' ? 'القانون الوحيد الذي يحكم الصنعة' : 'EVERY CRAFT HAS ITS SOVEREIGN.'}
+            <div className="climax-headline-motion">
+              <h2 className="climax-headline font-cairo text-[#E64648] text-display-xl lg:text-[10vw] font-black leading-none tracking-tighter select-none py-2">
+                للصنعة عرّاب
+              </h2>
+            </div>
+            <div className="climax-sub-motion">
+              <div className="climax-sub font-mono text-[10px] md:text-xs tracking-[0.35em] text-[#F1EEE8] opacity-70 uppercase select-none mt-2">
+                {language === 'ar' ? 'القانون الوحيد الذي يحكم الصنعة' : 'EVERY CRAFT HAS ITS SOVEREIGN.'}
+              </div>
             </div>
           </div>
         </div>
