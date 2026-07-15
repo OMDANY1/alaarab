@@ -97,20 +97,48 @@ export default function Insight() {
       });
     });
 
-    // Mobile/Tablet natural vertical scroll layout fallback (Under 1024px)
+    // Mobile/Tablet scroll stack timeline (Under 1024px)
     mm.add("(max-width: 1023px)", () => {
+      // ── Evolution Sequence (Mobile Pinned Stack) ──
       const steps = gsap.utils.toArray('.evolution-step-motion');
+      const tlEvolution = gsap.timeline({
+        scrollTrigger: {
+          trigger: evolutionRef.current,
+          start: 'top top',
+          end: '+=140%',
+          scrub: 0.8,
+          pin: true,
+        },
+      });
+
+      gsap.set(steps, { opacity: 0, y: 18, scale: 0.97 });
+
+      tlEvolution.fromTo('.ev-line-y',
+        { scaleY: 0 },
+        { scaleY: 1, duration: 0.5, ease: 'none' },
+        0
+      );
+
+      steps.forEach((step: any, index) => {
+        tlEvolution.to(step, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          color: index === steps.length - 1 ? '#E64648' : '#F1EEE8',
+          duration: 1,
+          ease: 'power3.out',
+        })
+        .to(step, {
+          opacity: index === steps.length - 1 ? 1 : 0.05,
+          y: index === steps.length - 1 ? 0 : -15,
+          scale: index === steps.length - 1 ? 1.02 : 0.98,
+          duration: 0.8,
+          delay: 0.3,
+        });
+      });
+
+      // Part D fallback remains static in this sprint
       const lines = gsap.utils.toArray('.stmt-line-wrapper');
-
-      gsap.set(steps, {
-        clearProps: "all",
-      });
-      gsap.set(steps, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-      });
-
       gsap.set(lines, {
         opacity: 1,
         y: 0,
@@ -214,17 +242,14 @@ export default function Insight() {
             {language === 'ar' ? 'سلسلة التطور الدلالي' : 'SEMANTIC CHAIN PROGRESS'}
           </div>
           
-          <div className="relative w-full max-w-4xl h-[200px] flex items-center justify-center max-lg:h-auto max-lg:flex-col max-lg:gap-8 max-lg:relative">
+          <div className="relative w-full max-w-4xl h-[200px] flex items-center justify-center">
             {(language === 'ar' ? stepsAr : stepsEn).map((step, i) => (
               <div
                 key={i}
-                className="evolution-step-motion absolute lg:absolute max-lg:relative"
+                className="evolution-step-motion absolute"
               >
                 <div className="evolution-step font-cairo text-display-md lg:text-display-lg font-black tracking-tighter text-center max-lg:text-heading-lg">
                   {step}
-                  {i < stepsAr.length - 1 && (
-                    <div className="text-[12px] opacity-30 mt-2 text-center lg:hidden">↓</div>
-                  )}
                 </div>
               </div>
             ))}
