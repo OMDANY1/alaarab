@@ -150,42 +150,43 @@ export default function Discovery() {
           trigger: noiseWallRef.current,
           start: 'top top',
           end: '+=100%',
-          scrub: 1,
+          scrub: 0.8,
           pin: true,
         },
       });
 
       words.forEach((word: any, i) => {
         const angle = (i / words.length) * Math.PI * 2;
-        const radius = 40 + Math.random() * 80;
+        const radius = 30 + Math.random() * 30;
         const x = Math.cos(angle) * radius;
         const y = Math.sin(angle) * radius;
 
         gsap.set(word, {
-          x: x * 0.8,
-          y: y * 0.8,
-          scale: 0.5 + Math.random() * 0.5,
-          opacity: 0.08 + Math.random() * 0.25,
-          rotation: -10 + Math.random() * 20,
+          x: x * 0.7,
+          y: y * 0.7,
+          scale: 0.5 + Math.random() * 0.3,
+          opacity: 0.08 + Math.random() * 0.2,
+          rotation: -6 + Math.random() * 12,
         });
       });
 
       tlNoise.to(words, {
         x: 0,
         y: 0,
-        scale: 1.2,
-        opacity: 0.7,
+        scale: 1.1,
+        opacity: 0.65,
         filter: 'blur(0px)',
-        stagger: 0.015,
-        duration: 1,
+        stagger: 0.01,
+        duration: 1.0,
       })
       .to(words, {
         scale: 0.3,
         opacity: 0,
-        filter: 'blur(12px)',
-        stagger: 0.008,
+        filter: 'blur(10px)',
+        stagger: 0.005,
         duration: 0.8,
-      });
+      })
+      .to({}, { duration: 0.3 });
 
       // ── The Untold Story (Compressed Narrative) ──
       const tlProblem = gsap.timeline({
@@ -329,7 +330,7 @@ export default function Discovery() {
           {phrases.map((phrase, i) => (
             <div
               key={i}
-              className="noise-word-motion absolute pointer-events-none select-none"
+              className={`noise-word-motion absolute pointer-events-none select-none ${i % 2 === 0 ? 'max-lg:hidden' : ''}`}
             >
               <span className="noise-word font-cairo text-[4vw] md:text-[2.5vw] font-black text-[#2D070B] whitespace-nowrap">
                 {phrase}
