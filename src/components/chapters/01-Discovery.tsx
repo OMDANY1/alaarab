@@ -193,35 +193,61 @@ export default function Discovery() {
           trigger: problemRef.current,
           start: 'top top',
           end: '+=130%',
-          scrub: 1,
+          scrub: 0.8,
           pin: true,
         },
       });
 
-      const lines = gsap.utils.toArray('.problem-line-wrapper');
-      gsap.set(lines, { opacity: 0, y: 15 });
+      const lines = gsap.utils.toArray('.problem-line-wrapper') as any[];
+      const line1 = lines[0];
+      const line2 = lines[1];
 
+      // Set initial state with reduced transform distance (y: 12)
+      gsap.set(lines, { opacity: 0, y: 12 });
+
+      // 1. Silence at start
+      tlProblem.to({}, { duration: 0.4 });
+
+      // 2. Background begins transforming
       tlProblem.to(problemRef.current, {
         backgroundColor: '#2D070B',
         color: '#F1EEE8',
-        duration: 1,
+        duration: 1.0,
         ease: 'none',
-      }, 0);
+      }, 'bg-transition');
 
-      lines.forEach((line: any, index) => {
-        tlProblem.to(line, {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: 'power3.out',
-        })
-        .to(line, {
-          opacity: index === lines.length - 1 ? 1 : 0.08,
-          y: index === lines.length - 1 ? 0 : -10,
-          duration: 0.8,
-          delay: 0.3,
-        });
+      // 3. Sentence 01 reveals (staggered with background transition)
+      tlProblem.to(line1, {
+        opacity: 1,
+        y: 0,
+        duration: 1.0,
+        ease: 'power2.out',
+      }, 'bg-transition+=0.6');
+
+      // 4. Small pause (readable moment for Sentence 01)
+      tlProblem.to({}, { duration: 0.6 });
+
+      // Sentence 01 transitions down/out to make way for Sentence 02
+      tlProblem.to(line1, {
+        opacity: 0.08,
+        y: -8,
+        duration: 0.6,
+        ease: 'power2.inOut',
       });
+
+      // 5. Sentence 02 reveals
+      tlProblem.to(line2, {
+        opacity: 1,
+        y: 0,
+        duration: 1.0,
+        ease: 'power2.out',
+      });
+
+      // 6. Small pause (readable moment for Sentence 02)
+      tlProblem.to({}, { duration: 0.8 });
+
+      // 7. Transition to the next beat (smooth exit release)
+      tlProblem.to({}, { duration: 0.4 });
     });
 
     // ── Turning Point 30+ Years Reveal (Shared) ──
