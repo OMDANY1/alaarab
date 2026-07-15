@@ -36,7 +36,7 @@ export default function BrandIdea() {
       });
 
       const items = gsap.utils.toArray('.buildup-item');
-      const climax = document.querySelector('.climax-headline-motion');
+      const climax = document.querySelector('.climax-headline');
       const climaxSub = document.querySelector('.climax-sub');
       const boardLines = gsap.utils.toArray('.ev-guide-line');
 
@@ -88,7 +88,7 @@ export default function BrandIdea() {
     // Mobile and tablet natural layout flow fallback (Under 1024px)
     mm.add("(max-width: 1023px)", () => {
       const items = gsap.utils.toArray('.buildup-item');
-      const climax = document.querySelector('.climax-headline-motion');
+      const climax = document.querySelector('.climax-headline');
       const climaxSub = document.querySelector('.climax-sub');
 
       gsap.set(items, {
@@ -182,11 +182,9 @@ export default function BrandIdea() {
 
           {/* Climax reveal (Dominant Typographic Centerpiece) */}
           <div className="flex flex-col items-center gap-6 z-10 relative max-lg:text-center max-lg:mb-6">
-            <div className="climax-headline-motion py-2">
-              <h2 className="climax-headline font-cairo text-[#E64648] text-display-xl lg:text-[10vw] font-black leading-none tracking-tighter select-none">
-                للصنعة عرّاب
-              </h2>
-            </div>
+            <h2 className="climax-headline font-cairo text-[#E64648] text-display-xl lg:text-[10vw] font-black leading-none tracking-tighter select-none py-2">
+              للصنعة عرّاب
+            </h2>
             <div className="climax-sub font-mono text-[10px] md:text-xs tracking-[0.35em] text-[#F1EEE8] opacity-70 uppercase select-none mt-2">
               {language === 'ar' ? 'القانون الوحيد الذي يحكم الصنعة' : 'EVERY CRAFT HAS ITS SOVEREIGN.'}
             </div>

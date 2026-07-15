@@ -57,7 +57,7 @@ export default function Discovery() {
     // Desktop timeline triggers (1024px and above)
     mm.add("(min-width: 1024px)", () => {
       // ── Category Noise Wall Scroll Animation ──
-      const words = gsap.utils.toArray('.noise-word-motion');
+      const words = gsap.utils.toArray('.noise-word');
       const tlNoise = gsap.timeline({
         scrollTrigger: {
           trigger: noiseWallRef.current,
@@ -142,7 +142,7 @@ export default function Discovery() {
 
     // Mobile and tablet natural layout flow fallback (Under 1024px)
     mm.add("(max-width: 1023px)", () => {
-      const words = gsap.utils.toArray('.noise-word-motion');
+      const words = gsap.utils.toArray('.noise-word');
       const lines = gsap.utils.toArray('.problem-line-wrapper');
 
       // Clear any inline inline styles/transforms to allow natural relative wraps
@@ -174,12 +174,12 @@ export default function Discovery() {
       { opacity: 0, scale: 0.9, y: 30 },
       { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: 'power4.out' }
     )
-    .fromTo('.turning-sub-motion',
+    .fromTo('.turning-sub',
       { opacity: 0, y: 25 },
       { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
       '-=0.4'
     )
-    .fromTo('.turning-desc-motion',
+    .fromTo('.turning-desc',
       { opacity: 0, y: 30 },
       { opacity: 0.9, y: 0, duration: 0.8, ease: 'power3.out' },
       '-=0.4'
@@ -238,14 +238,12 @@ export default function Discovery() {
         />
         <div className="flex-1 relative w-full flex items-center justify-center overflow-hidden min-h-[50vh] max-lg:flex-wrap max-lg:gap-4 max-lg:py-12 max-lg:px-4 max-lg:min-h-0">
           {phrases.map((phrase, i) => (
-            <div
+            <span
               key={i}
-              className="noise-word-motion absolute lg:absolute pointer-events-none select-none opacity-20 max-lg:relative max-lg:opacity-65 max-lg:pointer-events-auto max-lg:select-text"
+              className="noise-word absolute lg:absolute font-cairo text-[4vw] md:text-[2.5vw] font-black text-[#2D070B] whitespace-nowrap pointer-events-none opacity-20 max-lg:relative max-lg:text-body-lg max-lg:opacity-65 max-lg:pointer-events-auto"
             >
-              <span className="noise-word font-cairo text-[4vw] md:text-[2.5vw] font-black text-[#2D070B] whitespace-nowrap">
-                {phrase}
-              </span>
-            </div>
+              {phrase}
+            </span>
           ))}
         </div>
       </section>
@@ -286,11 +284,9 @@ export default function Discovery() {
             <span className="font-mono text-xs tracking-[0.3em] uppercase opacity-60">
               {language === 'ar' ? 'الخبرة التراكمية' : 'THE HISTORICAL DEPTH'}
             </span>
-            <div className="turning-sub-motion py-1">
-              <h4 className="turning-sub font-cairo text-heading-lg lg:text-display-md font-black leading-[1.1]">
-                {language === 'ar' ? 'خبرة في الصنعة.' : 'YEARS OF CRAFT MASTERY.'}
-              </h4>
-            </div>
+            <h4 className="turning-sub font-cairo text-heading-lg lg:text-display-md font-black leading-[1.1] py-1">
+              {language === 'ar' ? 'خبرة في الصنعة.' : 'YEARS OF CRAFT MASTERY.'}
+            </h4>
           </div>
 
           {/* Right Column: Numeral & Description (Supporting Composition) */}
@@ -298,13 +294,11 @@ export default function Discovery() {
             <div className="turning-number font-mono text-[7vw] lg:text-[5vw] font-bold text-[#F1EEE8] leading-none select-none">
               {language === 'ar' ? '٣٠+' : '30+'}
             </div>
-            <div className="turning-desc-motion py-1">
-              <p className="turning-desc font-cairo text-body-lg opacity-85 leading-relaxed">
-                {language === 'ar'
-                  ? 'أكثر من ٣٠ سنة في الصنعة. خبرة لا تبنى في حملة، بل تصنعها السنين.'
-                  : 'More than 30 years of professional restaurant mastery in Saudi Arabia. Built over decades, not templates.'}
-              </p>
-            </div>
+            <p className="turning-desc font-cairo text-body-lg opacity-85 leading-relaxed">
+              {language === 'ar'
+                ? 'أكثر من ٣٠ سنة في الصنعة. خبرة لا تبنى في حملة، بل تصنعها السنين.'
+                : 'More than 30 years of professional restaurant mastery in Saudi Arabia. Built over decades, not templates.'}
+            </p>
           </div>
         </div>
       </section>

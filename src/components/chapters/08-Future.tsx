@@ -20,9 +20,7 @@ export default function Future() {
   const manifestoRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    const mm = gsap.matchMedia();
-
-    // ── Scalability Reveal Anim (Shared) ──
+    // ── Scalability Reveal Anim ──
     const scaleItems = scalabilityRef.current?.querySelectorAll('.scale-item');
     if (scaleItems) {
       gsap.fromTo(scaleItems,
@@ -41,48 +39,33 @@ export default function Future() {
       );
     }
 
-    // Desktop only scroll-pin timeline (1024px and above)
-    mm.add("(min-width: 1024px)", () => {
-      // ── Manifesto Beats Anim ──
-      const beats = gsap.utils.toArray('.manifesto-beat-motion');
-      const tlManifesto = gsap.timeline({
-        scrollTrigger: {
-          trigger: manifestoRef.current,
-          start: 'top top',
-          end: '+=350%',
-          scrub: 1,
-          pin: true,
-        },
-      });
-
-      gsap.set(beats, { opacity: 0.05, y: 50 });
-
-      beats.forEach((beat: any, index) => {
-        tlManifesto.to(beat, {
-          opacity: 1,
-          y: 0,
-          color: index === beats.length - 1 ? '#E64648' : '#F1EEE8',
-          duration: 1,
-          ease: 'power3.out',
-        })
-        .to(beat, {
-          opacity: index === beats.length - 1 ? 1 : 0,
-          y: index === beats.length - 1 ? 0 : -30,
-          duration: 0.8,
-          delay: 0.6,
-        });
-      });
+    // ── Manifesto Beats Anim ──
+    const beats = gsap.utils.toArray('.manifesto-beat');
+    const tlManifesto = gsap.timeline({
+      scrollTrigger: {
+        trigger: manifestoRef.current,
+        start: 'top top',
+        end: '+=350%',
+        scrub: 1,
+        pin: true,
+      },
     });
 
-    // Mobile and tablet natural layout flow fallback (Under 1024px)
-    mm.add("(max-width: 1023px)", () => {
-      const beats = gsap.utils.toArray('.manifesto-beat-motion');
-      gsap.set(beats, {
-        clearProps: "all",
-      });
-      gsap.set(beats, {
+    gsap.set(beats, { opacity: 0.05, y: 50 });
+
+    beats.forEach((beat: any, index) => {
+      tlManifesto.to(beat, {
         opacity: 1,
         y: 0,
+        color: index === beats.length - 1 ? '#E64648' : '#F1EEE8',
+        duration: 1,
+        ease: 'power3.out',
+      })
+      .to(beat, {
+        opacity: index === beats.length - 1 ? 1 : 0,
+        y: index === beats.length - 1 ? 0 : -30,
+        duration: 0.8,
+        delay: 0.6,
       });
     });
 
@@ -172,26 +155,22 @@ export default function Future() {
           number="08 / 08"
         />
         
-        <div className="flex-1 max-w-5xl text-center flex flex-col justify-center items-center relative select-none w-full min-h-[40vh] max-lg:min-h-0 max-lg:py-12 max-lg:gap-8 max-lg:select-text px-6">
+        <div className="flex-1 max-w-5xl text-center flex flex-col justify-center items-center relative select-none w-full min-h-[40vh]">
           {lines.map((line, i) => (
             <div
               key={i}
-              className="manifesto-beat-motion absolute lg:absolute w-full flex flex-col items-center justify-center max-lg:relative"
+              className={`manifesto-beat absolute font-display font-black leading-[1.25] py-2 ${
+                i === lines.length - 1
+                  ? 'text-[8vw] md:text-[6vw] text-[#E64648]'
+                  : 'text-heading-lg md:text-display-md text-[#F1EEE8]'
+              }`}
             >
-              <div
-                className={`manifesto-beat font-display font-black leading-[1.25] py-2 text-center max-lg:text-heading-md ${
-                  i === lines.length - 1
-                    ? 'text-[8vw] md:text-[6vw] text-[#E64648] max-lg:text-heading-xl'
-                    : 'text-heading-lg md:text-display-md text-[#F1EEE8]'
-                }`}
-              >
-                {line}
-                {i === lines.length - 1 && (
-                  <div className="font-display text-[3.5vw] md:text-[2vw] text-[#F1EEE8] opacity-80 uppercase tracking-widest mt-4 max-lg:text-[14px]">
-                    {language === 'ar' ? 'للصنعة عرّاب' : 'EVERY CRAFT HAS ITS MASTER'}
-                  </div>
-                )}
-              </div>
+              {line}
+              {i === lines.length - 1 && (
+                <div className="font-display text-[3.5vw] md:text-[2vw] text-[#F1EEE8] opacity-80 uppercase tracking-widest mt-4">
+                  {language === 'ar' ? 'للصنعة عرّاب' : 'EVERY CRAFT HAS ITS MASTER'}
+                </div>
+              )}
             </div>
           ))}
         </div>
